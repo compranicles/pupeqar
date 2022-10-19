@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('intra-mobility.update', $intraMobility->id) }}" method="post" class="needs-validation" novalidate>
+                        <form action="{{ route('intra-mobility.update', $intraMobility->id) }}" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('quarter-field')

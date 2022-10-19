@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Helpers\LogActivity;
 use App\Models\Dean;
 use App\Models\Employee;
 use App\Models\Mobility;
@@ -22,14 +23,17 @@ use App\Http\Controllers\StorageFileController;
 use App\Models\FormBuilder\ExtensionProgramForm;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Services\CommonService;
 use Exception;
 
 class MobilityController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -173,34 +177,43 @@ class MobilityController extends Controller
         $mobility = Mobility::create($input);
         $mobility->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'InterM-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
+        LogActivity::addToLog('Had added an inter-country mobility.');
 
-                        MobilityDocument::create([
-                            'mobility_id' => $mobility->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'InterM-', 'mobility.index');
+                if(is_string($fileName)) MobilityDocument::create(['mobility_id' => $mobility->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
-        \LogActivity::addToLog('Had added an inter-country mobility.');
 
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been added.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'InterM-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 MobilityDocument::create([
+        //                     'mobility_id' => $mobility->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -366,40 +379,43 @@ class MobilityController extends Controller
         $mobility->update(['description' => '-clear']);
 
         $mobility->update($input);
+        LogActivity::addToLog('Had updated an inter-country mobility.');
 
-        if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'InterM-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        MobilityDocument::create([
-                            'mobility_id' => $mobility->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'InterM-', 'mobility.index');
+                if(is_string($fileName)) MobilityDocument::create(['mobility_id' => $mobility->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-
-           
         }
 
-        \LogActivity::addToLog('Had updated an inter-country mobility.');
-
-
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been updated.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'InterM-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+        //                 MobilityDocument::create([
+        //                     'mobility_id' => $mobility->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
+
     }
 
     /**
@@ -420,7 +436,7 @@ class MobilityController extends Controller
             return view('inactive');
         MobilityDocument::where('mobility_id', $mobility->id)->delete();
         $mobility->delete();
-        \LogActivity::addToLog('Had deleted an inter-country mobility.');
+        LogActivity::addToLog('Had deleted an inter-country mobility.');
 
         return redirect()->route('mobility.index')->with('mobility_success', 'Inter-Country mobility has been deleted.');
     }
@@ -432,7 +448,7 @@ class MobilityController extends Controller
             return view('inactive');
         MobilityDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of an inter-country mobility.');
+        LogActivity::addToLog('Had deleted a document of an inter-country mobility.');
 
         return true;
     }

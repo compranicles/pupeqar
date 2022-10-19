@@ -12,20 +12,18 @@ use App\Http\Controllers\{
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{
     DB,
-    Storage,
 };
 use App\Models\{
     Employee,
     OtherAccomplishment,
     OtherAccomplishmentDocument,
-    TemporaryFile,
     FormBuilder\DropdownOption,
     FormBuilder\ExtensionProgramForm,
     Maintenance\College,
     Maintenance\Department,
     Maintenance\Quarter,
 };
-
+use App\Services\CommonService;
 use App\Services\DateContentService;
 use Exception;
 
@@ -136,19 +134,30 @@ class OtherAccomplishmentController extends Controller
         $otherAccomplishment = OtherAccomplishment::create($input);
         $otherAccomplishment->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'OA-', 'other-accomplishment.index');
-                if(is_string($fileName)) {
-                    OtherAccomplishmentDocument::create(['other_accomplishment_id' => $otherAccomplishment->id,'filename' => $fileName]);
-                } else {
-                    OtherAccomplishmentDocument::where('other_accomplishment_id', $otherAccomplishment->id)->delete();
-                    return $fileName;
-                }
+        LogActivity::addToLog('Had added other individual accomplishment.');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'OA-', 'other-accomplishment.index');
+                if(is_string($fileName)) OtherAccomplishmentDocument::create(['other_accomplishment_id' => $otherAccomplishment->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
+        return redirect()->route('other-accomplishment.index')->with('other_success', 'Other accomplishment has been added.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'OA-', 'other-accomplishment.index');
+        //         if(is_string($fileName)) {
+        //             OtherAccomplishmentDocument::create(['other_accomplishment_id' => $otherAccomplishment->id,'filename' => $fileName]);
+        //         } else {
+        //             OtherAccomplishmentDocument::where('other_accomplishment_id', $otherAccomplishment->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
         // if($request->has('document')){
         //     try {
         //         $documents = $request->input('document');
@@ -173,10 +182,6 @@ class OtherAccomplishmentController extends Controller
         //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         //     }
         // }
-
-        LogActivity::addToLog('Had added other individual accomplishment.');
-
-        return redirect()->route('other-accomplishment.index')->with('other_success', 'Other accomplishment has been added.');
     }
 
     /**
@@ -308,27 +313,36 @@ class OtherAccomplishmentController extends Controller
             'department_id' => 'required'
         ]);
 
-        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0)
-            return view('inactive');
+        if(ExtensionProgramForm::where('id', 10)->pluck('is_active')->first() == 0) return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
 
         $otherAccomplishment->update(['description' => '-clear']);
 
         $otherAccomplishment->update($input);
 
+        LogActivity::addToLog('Had updated other accomplishment.');
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'OA-', 'other-accomplishment.index');
-                if(is_string($fileName)) {
-                    OtherAccomplishmentDocument::create(['other_accomplishment_id' => $otherAccomplishment->id,'filename' => $fileName]);
-                } else {
-                    OtherAccomplishmentDocument::where('other_accomplishment_id', $otherAccomplishment->id)->delete();
-                    return $fileName;
-                }
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'OA-', 'other-accomplishment.index');
+                if(is_string($fileName)) OtherAccomplishmentDocument::create(['other_accomplishment_id' => $otherAccomplishment->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
+        return redirect()->route('other-accomplishment.index')->with('other_success', 'Other accomplishment has been updated.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'OA-', 'other-accomplishment.index');
+        //         if(is_string($fileName)) {
+        //             OtherAccomplishmentDocument::create(['other_accomplishment_id' => $otherAccomplishment->id,'filename' => $fileName]);
+        //         } else {
+        //             OtherAccomplishmentDocument::where('other_accomplishment_id', $otherAccomplishment->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
 
         // if($request->has('document')){
         //     try {
@@ -354,11 +368,6 @@ class OtherAccomplishmentController extends Controller
         //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         //     }
         // }
-
-        LogActivity::addToLog('Had updated other accomplishment.');
-
-
-        return redirect()->route('other-accomplishment.index')->with('other_success', 'Other accomplishment has been updated.');
     }
 
     /**

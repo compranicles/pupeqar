@@ -30,7 +30,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('special-tasks.update', $special_task->id).'?v='.$v }}" method="post">
+                        <form action="{{ route('special-tasks.update', $special_task->id).'?v='.$v }}" enctype="multipart/form-data" method="post">
                             @csrf
                             @method('put')
                             @include('quarter-field')

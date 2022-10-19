@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('admin-special-tasks.update', $admin_special_task->id) }}" method="post" class="needs-validation" novalidate>
+                        <form action="{{ route('admin-special-tasks.update', $admin_special_task->id) }}" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('quarter-field')

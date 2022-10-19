@@ -12,7 +12,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('extension-service.store' ) }}" method="post" class="needs-validation" novalidate>
+                        <form action="{{ route('extension-service.store' ) }}" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
                             <div class="mt-2 mb-3">
                                 <i class="bi bi-pencil-square mr-1"></i><strong>Instructions: </strong> Please fill in the necessary details. No abbreviations. All inputs with the symbol (<strong style="color: red;">*</strong>) are required. Tag your extension partners to share them what you encoded.
                             </div>    

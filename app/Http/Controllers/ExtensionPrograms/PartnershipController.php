@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -25,14 +26,17 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\CommonService;
 use App\Services\DateContentService;
 
 class PartnershipController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -88,7 +92,6 @@ class PartnershipController extends Controller
             if($field->field_type_name == "dropdown" || $field->field_type_name == "text"){
                 $dropdownOptions = DropdownOption::where('dropdown_id', $field->dropdown_id)->where('is_active', 1)->get();
                 $dropdown_options[$field->name] = $dropdownOptions;
-
             }
         }
 
@@ -132,35 +135,42 @@ class PartnershipController extends Controller
         $partnership = Partnership::create($input);
         $partnership->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'P-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
+        LogActivity::addToLog('Had added a partnership/linkage/network "'.$request->input('title_of_partnership').'".');
 
-                        PartnershipDocument::create([
-                            'partnership_id' => $partnership->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'P-', 'partnership.index');
+                if(is_string($fileName)) PartnershipDocument::create(['partnership_id' => $partnership->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
-        \LogActivity::addToLog('Had added a partnership/linkage/network "'.$request->input('title_of_partnership').'".');
-
-
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been added.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'P-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 PartnershipDocument::create([
+        //                     'partnership_id' => $partnership->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -296,31 +306,36 @@ class PartnershipController extends Controller
 
         $partnership->update($input);
 
-        if($request->has('document')){
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'P-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
+        //             PartnershipDocument::create([
+        //                 'partnership_id' => $partnership->id,
+        //                 'filename' => $fileName,
+        //             ]);
+        //         }
+        //     }
+        // }
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'P-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
+        LogActivity::addToLog('Had updated the partnership/linkage/network "'.$partnership->title_of_partnership.'".');
 
-                    PartnershipDocument::create([
-                        'partnership_id' => $partnership->id,
-                        'filename' => $fileName,
-                    ]);
-                }
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'P-', 'partnership.index');
+                if(is_string($fileName)) PartnershipDocument::create(['partnership_id' => $partnership->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
-
-        \LogActivity::addToLog('Had updated the partnership/linkage/network "'.$partnership->title_of_partnership.'".');
-
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been updated.');
 
@@ -345,7 +360,7 @@ class PartnershipController extends Controller
         PartnershipDocument::where('partnership_id', $partnership->id)->delete();
         $partnership->delete();
 
-        \LogActivity::addToLog('Had deleted the partnership/linkage/network "'.$partnership->title_of_partnership.'".');
+        LogActivity::addToLog('Had deleted the partnership/linkage/network "'.$partnership->title_of_partnership.'".');
 
         return redirect()->route('partnership.index')->with('partnership_success', 'Partnership, linkages, and network has been deleted.');
     }
@@ -357,7 +372,7 @@ class PartnershipController extends Controller
             return view('inactive');
         PartnershipDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of a partnership/linkage/network.');
+        LogActivity::addToLog('Had deleted a document of a partnership/linkage/network.');
 
         return true;
     }

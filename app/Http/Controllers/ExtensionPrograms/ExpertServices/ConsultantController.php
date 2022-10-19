@@ -144,9 +144,8 @@ class ConsultantController extends Controller
 
         LogActivity::addToLog('Had added an expert service rendered as consultant "'.$request->input('title').'".');
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCS-', 'expert-service-as-consultant.index');
                 if(is_string($fileName)) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $esConsultant->id, 'filename' => $fileName]);
                 else return $fileName;
@@ -154,6 +153,15 @@ class ConsultantController extends Controller
         }
 
         return redirect()->route('expert-service-as-consultant.index')->with('edit_esconsultant_success', 'Expert service rendered as consultant has been added.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCS-', 'expert-service-as-consultant.index');
+        //         if(is_string($fileName)) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $esConsultant->id, 'filename' => $fileName]);
+        //         else return $fileName;
+        //     }
+        // }
     }
 
     /**
@@ -303,7 +311,7 @@ class ConsultantController extends Controller
             foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCS-', 'expert-service-as-consultant.index');
                 if(is_string($fileName)) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $expert_service_as_consultant->id, 'filename' => $fileName]);
-                // else return $fileName;
+                else return $fileName;
             }
         }
 

@@ -9,7 +9,7 @@
                 </div>
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('extension.code.save', $value['id'] ) }}" method="post" class="needs-validation" novalidate>
+                        <form action="{{ route('extension.code.save', $value['id'] ) }}" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
                             @csrf
                             @include('quarter-field')
                             @if($notificationID != null)

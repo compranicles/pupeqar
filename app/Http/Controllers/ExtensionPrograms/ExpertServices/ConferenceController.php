@@ -145,10 +145,18 @@ class ConferenceController extends Controller
 
         LogActivity::addToLog('Had added an expert service rendered in conference "'.$request->input('title').'".');
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
+        //         if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $esConference->id, 'filename' => $fileName]);
+        //         else return $fileName;
+        //     }
+        // }
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCF-', 'expert-service-in-conference.index');
                 if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $esConference->id, 'filename' => $fileName]);
                 else return $fileName;
             }
@@ -294,7 +302,28 @@ class ConferenceController extends Controller
 
         $expert_service_in_conference->update(['description' => '-clear']);
 
-        $expert_service_in_conference->update($input);
+        $expert_service_in_conference->update($input);   
+
+        LogActivity::addToLog('Had updated the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCF-', 'expert-service-in-conference.index');
+                if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $expert_service_in_conference->id, 'filename' => $fileName]);
+                else return $fileName;
+            }
+        }
+
+        return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been updated.');
+        
+        // if(file_exists($request->file(['document']))){
+        //     $documents = $request->file(['document']);
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
+        //         if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $expert_service_in_conference->id, 'filename' => $fileName]);
+        //         else return $fileName;
+        //     }
+        // }
 
         // return $request->file('document')
         // if($request->has('document')){
@@ -303,32 +332,20 @@ class ConferenceController extends Controller
         //     }
         // }
 
-        return $request->input('document');
-        // return $request->file(['document']);
-
-        if(file_exists($request->file(['document']))){
-            $documents = $request->file(['document']);
-            foreach($documents as $file){
-                return $file->getClientOriginalName();
-                // $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
-                // if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $expert_service_in_conference->id, 'filename' => $fileName]);
-                // else return $fileName;
-            }
-        }
-       
-
-        LogActivity::addToLog('Had updated the expert service rendered in conference "'.$expert_service_in_conference->title.'".');
         // return $request->input('document');
-        if(file_exists($request->file(['document']))){
-            $documents = $request->file(['document']);
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
-                if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $expert_service_in_conference->id, 'filename' => $fileName]);
-                else return $fileName;
-            }
-        }
+        // // return $request->file(['document']);
 
-        return redirect()->route('expert-service-in-conference.index')->with('edit_esconference_success', 'Expert service rendered in conference, workshop, or training course has been updated.');
+        // if(file_exists($request->file(['document']))){
+        //     $documents = $request->file(['document']);
+        //     foreach($documents as $file){
+        //         return $file->getClientOriginalName();
+        //         // $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESCF-', 'expert-service-in-conference.index');
+        //         // if(is_string($fileName)) ExpertServiceConferenceDocument::create(['expert_service_conference_id' => $expert_service_in_conference->id, 'filename' => $fileName]);
+        //         // else return $fileName;
+        //     }
+        // }
+
+        
     }
 
     /**

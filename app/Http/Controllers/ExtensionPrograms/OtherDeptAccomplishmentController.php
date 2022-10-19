@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -26,15 +27,18 @@ use App\Models\{
     Dean,
     Chairperson,
 };
+use App\Services\CommonService;
 use App\Services\DateContentService;
 use Exception;
 
 class OtherDeptAccomplishmentController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -129,39 +133,44 @@ class OtherDeptAccomplishmentController extends Controller
 
         $otherDeptAccomplishment = OtherDeptAccomplishment::create($input);
         $otherDeptAccomplishment->update(['user_id' => auth()->id()]);
+        
+        LogActivity::addToLog('Had added other department/college accomplishment.');
 
-        if($request->has('document')){
-
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'OA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        OtherDeptAccomplishmentDocument::create([
-                            'other_dept_accomplishment_id' => $otherDeptAccomplishment->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'OA-', 'other-dept-accomplishment.index');
+                if(is_string($fileName)) OtherDeptAccomplishmentDocument::create(['other_dept_accomplishment_id' => $otherDeptAccomplishment->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-
-           
         }
-        \LogActivity::addToLog('Had added other department/college accomplishment.');
 
         return redirect()->route('other-dept-accomplishment.index')->with('other_dept_success', 'Other department/college accomplishment has been added.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'OA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+    
+        //                 OtherDeptAccomplishmentDocument::create([
+        //                     'other_dept_accomplishment_id' => $otherDeptAccomplishment->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -290,41 +299,45 @@ class OtherDeptAccomplishmentController extends Controller
         if(ExtensionProgramForm::where('id', 11)->pluck('is_active')->first() == 0)
             return view('inactive');
         $input = $request->except(['_token', '_method', 'document']);
-
         $otherDeptAccomplishment->update(['description' => '-clear']);
-
         $otherDeptAccomplishment->update($input);
 
-        if($request->has('document')){
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'OA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        OtherDeptAccomplishmentDocument::create([
-                            'other_dept_accomplishment_id' => $otherDeptAccomplishment->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'OA-', 'other-dept-accomplishment.index');
+                if(is_string($fileName)) OtherDeptAccomplishmentDocument::create(['other_dept_accomplishment_id' => $otherDeptAccomplishment->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
-        \LogActivity::addToLog('Had updated other department/college accomplishment.');
-
-
+        LogActivity::addToLog('Had updated other department/college accomplishment.');
         return redirect()->route('other-dept-accomplishment.index')->with('other_dept_success', 'Other department/college accomplishment has been updated.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'OA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 OtherDeptAccomplishmentDocument::create([
+        //                     'other_dept_accomplishment_id' => $otherDeptAccomplishment->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -345,7 +358,7 @@ class OtherDeptAccomplishmentController extends Controller
             return view('inactive');
         OtherDeptAccomplishmentDocument::where('other_dept_accomplishment_id', $otherDeptAccomplishment->id)->delete();
         $otherDeptAccomplishment->delete();
-        \LogActivity::addToLog('Had deleted other department/college accomplishment.');
+        LogActivity::addToLog('Had deleted other department/college accomplishment.');
 
         return redirect()->route('other-dept-accomplishment.index')->with('other_dept_success', 'Other department/college accomplishment has been deleted.');
     }
@@ -357,7 +370,7 @@ class OtherDeptAccomplishmentController extends Controller
             return view('inactive');
         OtherDeptAccomplishmentDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of other department/college accomplishment.');
+        LogActivity::addToLog('Had deleted a document of other department/college accomplishment.');
 
         return true;
     }

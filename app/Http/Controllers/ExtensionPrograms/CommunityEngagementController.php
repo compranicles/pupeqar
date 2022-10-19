@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -26,15 +27,17 @@ use App\Models\{
     Dean,
     Chairperson,
 };
+use App\Services\CommonService;
 use App\Services\DateContentService;
-use Exception;
 
 class CommunityEngagementController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -129,33 +132,41 @@ class CommunityEngagementController extends Controller
         $communityEngagement = CommunityEngagement::create($input);
         $communityEngagement->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'CEC-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'CEC-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
+        //                 CommunityEngagementDocument::create([
+        //                     'community_engagement_id' => $communityEngagement->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
 
-                        CommunityEngagementDocument::create([
-                            'community_engagement_id' => $communityEngagement->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'CEC-', 'community-engagement.index');
+                if(is_string($fileName)) CommunityEngagementDocument::create(['community_engagement_id' => $communityEngagement->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
-        \LogActivity::addToLog('Had added a community engagement conducted by college/department.');
+
+        LogActivity::addToLog('Had added a community engagement conducted by college/department.');
 
         return redirect()->route('community-engagement.index')->with('community_success', 'Community engagement conducted by college/department has been added.');
     }
@@ -293,37 +304,45 @@ class CommunityEngagementController extends Controller
 
         $communityEngagement->update($input);
 
-        if($request->has('document')){
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'CEC-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
+        
+        LogActivity::addToLog('Had updated a community engagement conducted by college/department.');
 
-                        CommunityEngagementDocument::create([
-                            'community_engagement_id' => $communityEngagement->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'CEC-', 'community-engagement.index');
+                if(is_string($fileName)) CommunityEngagementDocument::create(['community_engagement_id' => $communityEngagement->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-            
         }
 
-        \LogActivity::addToLog('Had updated a community engagement conducted by college/department.');
-
-
         return redirect()->route('community-engagement.index')->with('community_success', 'Community engagement conducted by college/department has been updated.');
+
+                // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'CEC-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 CommunityEngagementDocument::create([
+        //                     'community_engagement_id' => $communityEngagement->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+            
+        // }
     }
 
     /**
@@ -345,7 +364,7 @@ class CommunityEngagementController extends Controller
         CommunityEngagementDocument::where('community_engagement_id', $communityEngagement->id)->delete();
         $communityEngagement->delete();
 
-        \LogActivity::addToLog('Had deleted a community engagement conducted by college/department.');
+        LogActivity::addToLog('Had deleted a community engagement conducted by college/department.');
 
         return redirect()->route('community-engagement.index')->with('community_success', 'Community engagement conducted by college/department has been deleted.');
     }
@@ -357,7 +376,7 @@ class CommunityEngagementController extends Controller
             return view('inactive');
         CommunityEngagementDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of a community engagement.');
+        LogActivity::addToLog('Had deleted a document of a community engagement.');
 
         return true;
     }

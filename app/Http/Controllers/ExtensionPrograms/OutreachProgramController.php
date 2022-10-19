@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ExtensionPrograms;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -25,14 +26,17 @@ use App\Models\{
     Maintenance\Quarter,
     Maintenance\Department,
 };
+use App\Services\CommonService;
 use Exception;
 
 class OutreachProgramController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -125,36 +129,43 @@ class OutreachProgramController extends Controller
         $outreach = OutreachProgram::create($input);
         $outreach->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
+        LogActivity::addToLog('Had added a community relations and outreach program "'.$request->input('title_of_the_program').'".');
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'OP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        OutreachProgramDocument::create([
-                            'outreach_program_id' => $outreach->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'OP-', 'outreach-program.index');
+                if(is_string($fileName)) OutreachProgramDocument::create(['outreach_program_id' => $outreach->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
-        \LogActivity::addToLog('Had added a community relations and outreach program "'.$request->input('title_of_the_program').'".');
-
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been added.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'OP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 OutreachProgramDocument::create([
+        //                     'outreach_program_id' => $outreach->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -282,33 +293,38 @@ class OutreachProgramController extends Controller
 
         $outreach_program->update($input);
 
-        if($request->has('document')){
+        LogActivity::addToLog('Had updated the community relations and outreach program "'.$outreach_program->title_of_the_program.'".');
 
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                if($temporaryFile){
-                    $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                    $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                    $ext = $info['extension'];
-                    $fileName = 'OP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                    $newPath = "documents/".$fileName;
-                    Storage::move($temporaryPath, $newPath);
-                    Storage::deleteDirectory("documents/tmp/".$document);
-                    $temporaryFile->delete();
-
-                    OutreachProgramDocument::create([
-                        'outreach_program_id' => $outreach_program->id,
-                        'filename' => $fileName,
-                    ]);
-                }
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'OP-', 'outreach-program.index');
+                if(is_string($fileName)) OutreachProgramDocument::create(['outreach_program_id' => $outreach_program->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
-
-        \LogActivity::addToLog('Had updated the community relations and outreach program "'.$outreach_program->title_of_the_program.'".');
-
-
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been updated.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //         if($temporaryFile){
+        //             $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //             $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //             $ext = $info['extension'];
+        //             $fileName = 'OP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //             $newPath = "documents/".$fileName;
+        //             Storage::move($temporaryPath, $newPath);
+        //             Storage::deleteDirectory("documents/tmp/".$document);
+        //             $temporaryFile->delete();
+
+        //             OutreachProgramDocument::create([
+        //                 'outreach_program_id' => $outreach_program->id,
+        //                 'filename' => $fileName,
+        //             ]);
+        //         }
+        //     }
+        // }
     }
 
     /**
@@ -330,7 +346,7 @@ class OutreachProgramController extends Controller
         OutreachProgramDocument::where('outreach_program_id', $outreach_program->id)->delete();
         $outreach_program->delete();
 
-        \LogActivity::addToLog('Had deleted the community relations and outreach program "'.$outreach_program->title_of_the_program.'".');
+        LogActivity::addToLog('Had deleted the community relations and outreach program "'.$outreach_program->title_of_the_program.'".');
 
         return redirect()->route('outreach-program.index')->with('outreach_success', 'Community relations and outreach program has been deleted.');
     }
@@ -342,7 +358,7 @@ class OutreachProgramController extends Controller
             return view('inactive');
         OutreachProgramDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of a community relations and outreach program.');
+        LogActivity::addToLog('Had deleted a document of a community relations and outreach program.');
 
         return true;
     }

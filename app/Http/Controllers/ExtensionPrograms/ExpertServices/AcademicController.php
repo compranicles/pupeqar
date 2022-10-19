@@ -140,14 +140,24 @@ class AcademicController extends Controller
         $classification = DB::select("CALL get_dropdown_name_by_id($esAcademic->classification)");
         LogActivity::addToLog('Had added an expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESA-', 'expert-service-in-academic.index');
-                if(is_string($fileName))  ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $esAcademic->id, 'filename' => $fileName]);
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESA-', 'expert-service-in-academic.index');
+                if(is_string($fileName)) ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $esAcademic->id, 'filename' => $fileName]);
                 else return $fileName;
             }
         }
+
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been added.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESA-', 'expert-service-in-academic.index');
+        //         if(is_string($fileName))  ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $esAcademic->id, 'filename' => $fileName]);
+        //         else return $fileName;
+        //     }
+        // }
 
         // if($request->has('document')){
         //     $documents = $request->input('document');
@@ -171,7 +181,6 @@ class AcademicController extends Controller
         //     }
         // }
 
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been added.');
     }
 
     /**
@@ -315,14 +324,24 @@ class AcademicController extends Controller
         $classification = DB::select("CALL get_dropdown_name_by_id($expert_service_in_academic->classification)");
         LogActivity::addToLog('Had updated the expert service rendered in academic '.strtolower($classification[0]->name).'.');
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESA-', 'expert-service-in-academic.index');
-                if(is_string($fileName))  ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $expert_service_in_academic->id, 'filename' => $fileName]);
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESA-', 'expert-service-in-academic.index');
+                if(is_string($fileName)) ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $expert_service_in_academic->id, 'filename' => $fileName]);
                 else return $fileName;
             }
         }
+
+        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been updated.');
+
+                // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $request->input('description'), 'ESA-', 'expert-service-in-academic.index');
+        //         if(is_string($fileName))  ExpertServiceAcademicDocument::create(['expert_service_academic_id' => $expert_service_in_academic->id, 'filename' => $fileName]);
+        //         else return $fileName;
+        //     }
+        // }
 
         // if($request->has('document')){
         //     $documents = $request->input('document');
@@ -344,7 +363,6 @@ class AcademicController extends Controller
         //         }
         //     }
         // }
-        return redirect()->route('expert-service-in-academic.index')->with('edit_esacademic_success', 'Expert service rendered in academic '.strtolower($classification[0]->name).' has been updated.');
     }
 
     /**
