@@ -127,11 +127,11 @@ class RegistrationController extends Controller
         // query this userid, roleid, sectorid, collegeid, department, office
         $schedSummary = array(
             array("role","2022-10-18","04:00 PM","11:59 PM",array(5,6)),
-            array("role","2022-10-19","12:00 AM","06:00 PM",array(5,6)),
+            array("role","2022-10-19","12:00 AM","06:00 AM",array(5,6)),
             array("college","2022-10-18","04:00 PM","11:59 PM",array(94,19,137)),
-            array("college","2022-10-19","12:00 AM","06:00 PM",array(94,19,137)),
+            array("college","2022-10-19","12:00 AM","06:00 AM",array(94,19,137)),
             array("college","2022-10-19","07:00 AM","01:00 PM",array(61,66,8,159,137)),
-            array("college","2022-10-19","01:00 PM","07:00 PM",array(176,137,211,200)),
+            array("college","2022-10-19","01:00 PM","07:00 PM",array(176,137,211,120,27,226,59,94,75)),
             array("college","2022-10-20","07:00 AM","01:00 PM",array(238,243,233,239)),
             array("college","2022-10-20","01:00 PM","07:00 PM",array(25,36,40,274))
         );
