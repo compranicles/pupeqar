@@ -1,4 +1,4 @@
-<h3 class="font-weight-bold mb-2">Research/Book Chapter - {{ $research->title }}</h3>
+<h3 class="font-weight-bold mb-2">Research/Book Chapter - {{ $research[0]->title }}</h3>
 <p>
     <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research</a>
 </p>
