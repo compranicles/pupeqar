@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Research;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -206,39 +207,48 @@ class PresentationController extends Controller
 
         $presentation = ResearchPresentation::create($input);
 
-        if($request->has('document')){
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'RPRE-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+        //                 ResearchDocument::create([
+        //                     'research_code' => $request->input('research_code'),
+        //                     'research_id' => $research->id,
+        //                     'research_form_id' => 4,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     } 
+        // }
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'RPRE-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ResearchDocument::create([
-                            'research_code' => $request->input('research_code'),
-                            'research_id' => $research->id,
-                            'research_form_id' => 4,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        LogActivity::addToLog('Had marked the research "'.$research->title.'" as presented.');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RPRE-", 'research.presentation.index');
+                if(is_string($fileName)) {
+                    ResearchDocument::create([
+                        'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
+                        'research_form_id' => 4,
+                        'filename' => $fileName,
+                    ]);
+                } else return $fileName;
             }
-            
         }
-
-        \LogActivity::addToLog('Had marked the research "'.$research->title.'" as presented.');
-
-
         return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been added.');
     }
 
@@ -338,40 +348,47 @@ class PresentationController extends Controller
 
         $presentation->update($input);
 
-        if($request->has('document')){
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'RPRE-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+        //                 ResearchDocument::create([
+        //                     'research_code' => $request->input('research_code'),
+        //                     'research_id' => $research->id,
+        //                     'research_form_id' => 4,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
 
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'RPRE-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        ResearchDocument::create([
-                            'research_code' => $request->input('research_code'),
-                            'research_id' => $research->id,
-                            'research_form_id' => 4,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        LogActivity::addToLog('Had updated the presentation details of research "'.$research->title.'".');
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RPRE-", 'research.presentation.index');
+                if(is_string($fileName)) {
+                    ResearchDocument::create([
+                        'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
+                        'research_form_id' => 4,
+                        'filename' => $fileName,
+                    ]);
+                } else return $fileName;
             }
-
-            
         }
-
-        \LogActivity::addToLog('Had updated the presentation details of research "'.$research->title.'".');
-
 
         return redirect()->route('research.presentation.index', $research->id)->with('success', 'Research presentation has been updated.');
     }

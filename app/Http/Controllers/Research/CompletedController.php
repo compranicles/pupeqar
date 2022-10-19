@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Research;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
@@ -27,14 +28,17 @@ use App\Models\{
     Maintenance\College,
     Maintenance\Department,
 };
+use App\Services\CommonService;
 use Exception;
 
 class CompletedController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -191,41 +195,51 @@ class CompletedController extends Controller
             'description' => $request->input('description'),
         ]);
 
-        if($request->has('document')){
+        LogActivity::addToLog('Had marked the research "'.$research->title.'" as completed.');
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'RCP-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ResearchDocument::create([
-                            'research_code' => $request->input('research_code'),
-                            'research_id' => $research->id,
-                            'research_form_id' => 2,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RCP-", 'research.completed.index');
+                if(is_string($fileName)) {
+                    ResearchDocument::create([
+                        'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
+                        'research_form_id' => 2,
+                        'filename' => $fileName,
+                    ]);
+                } else return $fileName;
             }
-
-           
         }
 
-        \LogActivity::addToLog('Had marked the research "'.$research->title.'" as completed.');
-
-
         return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been added.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'RCP-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+    
+        //                 ResearchDocument::create([
+        //                     'research_code' => $request->input('research_code'),
+        //                     'research_id' => $research->id,
+        //                     'research_form_id' => 2,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -328,41 +342,47 @@ class CompletedController extends Controller
             'description' => $request->input('description')
         ]);
 
-        if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'RCP-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ResearchDocument::create([
-                            'research_id' => $research->id,
-                            'research_code' => $request->input('research_code'),
-                            'research_form_id' => 2,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        LogActivity::addToLog('Had updated the completion details of research "'.$research->title.'".');
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RCP-", 'research.completed.index');
+                if(is_string($fileName)) {
+                    ResearchDocument::create([
+                        'research_code' => $request->input('research_code'),
+                        'research_id' => $research->id,
+                        'research_form_id' => 2,
+                        'filename' => $fileName,
+                    ]);
+                } else return $fileName;
             }
-
-           
         }
-
-        \LogActivity::addToLog('Had updated the completion details of research "'.$research->title.'".');
-
         return redirect()->route('research.completed.index', $research->id)->with('success', 'Research completetion has been updated.');
 
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'RCP-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 ResearchDocument::create([
+        //                     'research_id' => $research->id,
+        //                     'research_code' => $request->input('research_code'),
+        //                     'research_form_id' => 2,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }  
+        // }
 
     }
 
