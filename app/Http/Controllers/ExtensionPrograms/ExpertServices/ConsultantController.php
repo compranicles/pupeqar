@@ -297,12 +297,13 @@ class ConsultantController extends Controller
 
         LogActivity::addToLog('Had updated the xpert service rendered as consultant "'.$expert_service_as_consultant->title.'".');
 
-        if($request->has('document')){      
-            $documents = $request->input('document');
-            foreach($documents as $document){
+        // return $request->file(['document']);
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ESCS-', 'expert-service-as-consultant.index');
                 if(is_string($fileName)) ExpertServiceConsultantDocument::create(['expert_service_consultant_id' => $expert_service_as_consultant->id, 'filename' => $fileName]);
-                else return $fileName;
+                // else return $fileName;
             }
         }
 

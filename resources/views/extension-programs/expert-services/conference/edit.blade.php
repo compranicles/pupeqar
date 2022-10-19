@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" method="post">
+                        <form action="{{ route('expert-service-in-conference.update', $expert_service_in_conference->id) }}" enctype="multipart/form-data" method="post">
                             @csrf
                             @method('put')
                             @include('quarter-field')

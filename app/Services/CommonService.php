@@ -42,20 +42,14 @@ class CommonService {
         $fileDesc = $description == "" ? "" : $this->storageFileController->abbrev($description);
         $fileName = "";
         try {
-            $tempFile = TemporaryFile::where('folder', $file)->first();
-            if($tempFile){
-                $temporaryPath = "documents/tmp/".$file."/".$tempFile->filename;
-                $info = pathinfo(storage_path().'/documents/tmp/'.$file."/".$tempFile->filename);
-                $ext = $info['extension'];
-                $fileName = $additiveName . $fileDesc . '-' . now()->timestamp.uniqid() . '.' . $ext;
-                Storage::move($temporaryPath, "documents/".$fileName);
-                Storage::deleteDirectory("documents/tmp/".$file);
-                $tempFile->delete();
-                return $fileName;
-            }
-        } catch (Exception $error) {
-            return redirect()->route($route)->with( 'error', $error->getMessage()
-                // $error->getMessage() == "1" ? "Entry was saved but unable to upload documents, Please try reuploading the documents!" : 'Request timeout, Unable to upload documents, Please try again later! : '. $error->getMessage()
+            // $original = $file->getClientOriginalName();
+            $fileName = $additiveName . $fileDesc . '-' . now()->timestamp.uniqid() . '.' .  $file->extension();
+            $file->storeAs('documents', $fileName, 'local');
+            return $fileName;
+
+        } catch (\Throwable $error) {
+            return redirect()->route($route)->with( 'error', 
+                $error->getMessage() == "1" ? "Entry was saved but unable to upload documents, Please try reuploading the documents!" : 'Request timeout, Unable to upload documents, Please try again later! : '. $error->getMessage()
             );
         }
     }
@@ -109,3 +103,17 @@ class CommonService {
         }
     }
 }
+
+
+// $tempFile = TemporaryFile::where('folder', $file)->first();
+// if($tempFile){
+//     $temporaryPath = "documents/tmp/".$file."/".$tempFile->filename;
+//     $info = pathinfo(storage_path().'/documents/tmp/'.$file."/".$tempFile->filename);
+//     $ext = $info['extension'];
+//     $fileName = $additiveName . $fileDesc . '-' . now()->timestamp.uniqid() . '.' . $ext;
+//     Storage::move($temporaryPath, "documents/".$fileName);
+//     Storage::deleteDirectory("documents/tmp/".$file);
+//     $tempFile->delete();
+//     return $fileName;
+// }
+// throw new Exception("1");

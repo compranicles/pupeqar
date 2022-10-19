@@ -1,15 +1,16 @@
 <div class="{{ $fieldInfo->size }} {{ $fieldInfo->name }} mb-2" id="upload-document">
     <div class="form-group">
         <label class="font-weight-bold">{{ $fieldInfo->label }}</label><span style='color: red'>{{ ($fieldInfo->required == 1) ? " *" : '' }}</span>
-        <br>
+        {{-- <br>
         <span class="form-notes">
             Note: Finish the uploading of files before saving.
-        </span>
+        </span> --}}
         <input type="file"
-            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1"
+            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1 ml-3"
             name="{{ $fieldInfo->name }}[]"
             id="{{ $fieldInfo->name }}"
             multiple
+            accept="application/pdf, image/*"
             data-max-file-size="10MB"
             data-max-files="5"
             {{ ($fieldInfo->required == 1) ? 'required' : '' }}
@@ -28,37 +29,39 @@
 
 @push('scripts')
     <script>
-        var url = "{{ url('upload') }}";
-        FilePond.registerPlugin(
+        // var url = "{{ url('upload') }}";
+        // FilePond.registerPlugin(
 
-            // encodes the file as base64 data
-            FilePondPluginFileEncode,
+        //     // encodes the file as base64 data
+        //     FilePondPluginFileEncode,
 
-            // validates the size of the file
-            FilePondPluginFileValidateSize,
+        //     // validates the size of the file
+        //     FilePondPluginFileValidateSize,
 
-            // corrects mobile image orientation
-            FilePondPluginImageExifOrientation,
+        //     // corrects mobile image orientation
+        //     FilePondPluginImageExifOrientation,
 
-            // previews dropped images
-            FilePondPluginImagePreview,
-            FilePondPluginFileValidateType,
+        //     // previews dropped images
+        //     FilePondPluginImagePreview,
+        //     FilePondPluginFileValidateType,
 
-        );
+        // );
         // Create a FilePond instance
-        const pondDocument = FilePond.create(document.querySelector('input[name="{{ $fieldInfo->name }}[]"]'));
-        pondDocument.setOptions({
-            acceptedFileTypes: ['application/pdf', 'image/jpeg', 'image/png', 'image/x-png', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'],
-            server: {
-                timeout: 20000,
-                process: {
-                    url: url,
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    }
-                },
-            }
-        });
+        // const pondDocument = FilePond.create(document.querySelector('input[name="{{ $fieldInfo->name }}[]"]'));
+        // pondDocument.setOptions({
+        //     acceptedFileTypes: ['application/pdf', 'image'],   ///jpeg', 'image/png', 'image/x-png', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'
+        //     server: {
+                
+        //         timeout: 20000,
+        //         process: {
+        //             url: url,
+        //             headers: {
+        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        //             }
+        //         },
+        //     }
+          
+        // });
     </script>
     <!-- <script>
         $( "#document" ).on( "input", function() {

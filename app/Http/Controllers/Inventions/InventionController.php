@@ -26,14 +26,17 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\CommonService;
 use App\Services\DateContentService;
 
 class InventionController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -151,7 +154,7 @@ class InventionController extends Controller
         $iicw = Invention::create($input);
         $iicw->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
+        if($request->file('document')){
             $documents = $request->input('document');
             foreach($documents as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'IICW-', 'invention-innovation-creative.index');
