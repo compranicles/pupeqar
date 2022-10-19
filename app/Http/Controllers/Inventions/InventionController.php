@@ -154,19 +154,31 @@ class InventionController extends Controller
         $iicw = Invention::create($input);
         $iicw->update(['user_id' => auth()->id()]);
 
-        if($request->file('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'IICW-', 'invention-innovation-creative.index');
-                if(is_string($fileName)) {
-                    InventionDocument::create(['invention_id' => $iicw->id,'filename' => $fileName]);
-                } else {
-                    InventionDocument::where('invention_id', $iicw->id)->delete();
-                    return $fileName;
-                }
+        $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
+        LogActivity::addToLog("Had added ".ucfirst($classification[0]->name).' entitled "'.$request->input('title').'".');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'IICW-', 'invention-innovation-creative.index');
+                if(is_string($fileName)) InventionDocument::create(['invention_id' => $iicw->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');
+        
+        // if($request->file('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'IICW-', 'invention-innovation-creative.index');
+        //         if(is_string($fileName)) {
+        //             InventionDocument::create(['invention_id' => $iicw->id,'filename' => $fileName]);
+        //         } else {
+        //             InventionDocument::where('invention_id', $iicw->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
         // if($request->has('document')){
         //     $documents = $request->input('document');
         //     foreach($documents as $document){
@@ -185,13 +197,6 @@ class InventionController extends Controller
         //         }
         //     }
         // }
-
-        $classification = DB::select("CALL get_dropdown_name_by_id($iicw->classification)");
-
-        LogActivity::addToLog("Had added ".ucfirst($classification[0]->name).' entitled "'.$request->input('title').'".');
-
-        // dd($classification);
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been added.');
     }
 
     /**
@@ -350,18 +355,33 @@ class InventionController extends Controller
         $invention_innovation_creative->update(['description' => '-clear']);
         $invention_innovation_creative->update($input);
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'IICW-', 'invention-innovation-creative.index');
-                if(is_string($fileName)) {
-                    InventionDocument::create(['invention_id' => $invention_innovation_creative->id,'filename' => $fileName]);
-                } else {
-                    InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
-                    return $fileName;
-                }
+        
+        $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
+
+        LogActivity::addToLog("Had updated ".ucfirst($classification[0]->name).'.');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'IICW-', 'invention-innovation-creative.index');
+                if(is_string($fileName)) InventionDocument::create(['invention_id' => $invention_innovation_creative->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
+
+        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been updated.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'IICW-', 'invention-innovation-creative.index');
+        //         if(is_string($fileName)) {
+        //             InventionDocument::create(['invention_id' => $invention_innovation_creative->id,'filename' => $fileName]);
+        //         } else {
+        //             InventionDocument::where('invention_id', $invention_innovation_creative->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
 
         // if($request->has('document')){
         //     $documents = $request->input('document');
@@ -384,11 +404,6 @@ class InventionController extends Controller
         //     }
         // }
 
-        $classification = DB::select("CALL get_dropdown_name_by_id($invention_innovation_creative->classification)");
-
-        LogActivity::addToLog("Had updated ".ucfirst($classification[0]->name).'.');
-
-        return redirect()->route('invention-innovation-creative.index')->with('edit_iicw_success', ucfirst($classification[0]->name).' has been updated.');
     }
 
     /**
