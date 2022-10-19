@@ -17,7 +17,7 @@
             @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('student-training.update', $student_training->id) }}" method="post">
+                        <form action="{{ route('student-training.update', $student_training->id) }}" enctype="multipart/form-data" method="post">
                             @csrf
                             @method('put')
                             @include('quarter-field')

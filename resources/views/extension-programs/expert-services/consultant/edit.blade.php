@@ -22,7 +22,7 @@
 
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('expert-service-as-consultant.update', $expert_service_as_consultant->id) }}" method="post">
+                        <form action="{{ route('expert-service-as-consultant.update', $expert_service_as_consultant->id) }}" enctype="multipart/form-data" method="post">
                             @csrf
                             @method('put')
                             @include('quarter-field')

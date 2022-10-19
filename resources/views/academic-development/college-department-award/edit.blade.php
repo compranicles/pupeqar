@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('college-department-award.update', $college_department_award->id) }}" method="post">
+                        <form action="{{ route('college-department-award.update', $college_department_award->id) }}" enctype="multipart/form-data" method="post">
                             @csrf
                             @method('put')
                             @include('quarter-field')

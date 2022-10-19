@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('viable-project.update', $viable_project->id) }}" method="post">
+                        <form action="{{ route('viable-project.update', $viable_project->id) }}" enctype="multipart/form-data" method="post">
                             @csrf
                             @method('put')
                             @include('quarter-field')

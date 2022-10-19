@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form action="{{ route('request.update', $request->id) }}" method="post" class="needs-validation" novalidate>
+                        <form action="{{ route('request.update', $request->id) }}" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('quarter-field')

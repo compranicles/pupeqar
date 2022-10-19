@@ -15,7 +15,7 @@
                 @endif
                 <div class="card">
                     <div class="card-body">
-                        <form id="form-attendance-function" action="{{ route('attendance-function.update', $attendance_function->id) }}" method="post" class="needs-validation" novalidate>
+                        <form id="form-attendance-function" action="{{ route('attendance-function.update', $attendance_function->id) }}" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
                             @csrf
                             @method('put')
                             @include('quarter-field')
