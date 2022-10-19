@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -23,15 +24,18 @@ use App\Models\{
     Maintenance\Quarter,
     Maintenance\Department,
 };
+use App\Services\CommonService;
 use App\Services\DateContentService;
 use Exception;
 
 class ViableProjectController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -140,39 +144,42 @@ class ViableProjectController extends Controller
         $viable_project = ViableProject::create($input);
         $viable_project->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
+        LogActivity::addToLog('Had added a viable demo project "'.$request->input('name').'".');
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'VP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        ViableProjectDocument::create([
-                            'viable_project_id' => $viable_project->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'VP-', 'viable-project.index');
+                if(is_string($fileName)) ViableProjectDocument::create(['viable_project_id' => $viable_project->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-
-            
         }
 
-        \LogActivity::addToLog('Had added a viable demo project "'.$request->input('name').'".');
-
-
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been added.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'VP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+        //                 ViableProjectDocument::create([
+        //                     'viable_project_id' => $viable_project->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }            
+        // }
     }
 
     /**
@@ -314,37 +321,44 @@ class ViableProjectController extends Controller
 
         $viable_project->update($input);
 
-        if($request->has('document')){
+        LogActivity::addToLog('Had updated the viable demo project "'.$viable_project->name.'".');
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'VP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ViableProjectDocument::create([
-                            'viable_project_id' => $viable_project->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'VP-', 'viable-project.index');
+                if(is_string($fileName)) ViableProjectDocument::create(['viable_project_id' => $viable_project->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
-        \LogActivity::addToLog('Had updated the viable demo project "'.$viable_project->name.'".');
-
-
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been updated.');
+
+        // if($request->has('document')){
+
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'VP-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+    
+        //                 ViableProjectDocument::create([
+        //                     'viable_project_id' => $viable_project->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -366,7 +380,7 @@ class ViableProjectController extends Controller
         ViableProjectDocument::where('viable_project_id', $viable_project->id)->delete();
         $viable_project->delete();
 
-        \LogActivity::addToLog('Had deleted the viable demo project "'.$viable_project->name.'".');
+        LogActivity::addToLog('Had deleted the viable demo project "'.$viable_project->name.'".');
 
         return redirect()->route('viable-project.index')->with('project_success', 'Viable demonstration project has been deleted.');
     }
@@ -378,7 +392,7 @@ class ViableProjectController extends Controller
             return view('inactive');
         ViableProjectDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of a viable demo project.');
+        LogActivity::addToLog('Had deleted a document of a viable demo project.');
 
         return true;
     }

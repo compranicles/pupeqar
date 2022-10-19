@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -22,15 +23,18 @@ use App\Models\{
     Maintenance\Quarter,
     Maintenance\Department,
 };
+use App\Services\CommonService;
 use App\Services\DateContentService;
 use Exception;
 
 class ReferenceController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -130,41 +134,47 @@ class ReferenceController extends Controller
         $rtmmi = Reference::create($input);
         $rtmmi->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'RTMMI-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-
-                        ReferenceDocument::create([
-                            'reference_id' => $rtmmi->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-            }
-        }
-
         $accomplished = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
         $accomplishment = $accomplished[0]->name;
 
-        \LogActivity::addToLog('Had added '.$accomplishment.' entitled "'.$request->input('title').'".');
+        LogActivity::addToLog('Had added '.$accomplishment.' entitled "'.$request->input('title').'".');
 
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'RTMMI-', 'rtmmi.index');
+                if(is_string($fileName)) ReferenceDocument::create(['reference_id' => $rtmmi->id, 'filename' => $fileName]);
+                else return $fileName;
+            }
+        }
 
         return redirect()->route('rtmmi.index')->with(['edit_rtmmi_success' => ucfirst($accomplishment[0]), 'action' => 'added.' ]);
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'RTMMI-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 ReferenceDocument::create([
+        //                     'reference_id' => $rtmmi->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -310,43 +320,49 @@ class ReferenceController extends Controller
 
         $rtmmi->update($input);
 
-        if($request->has('document')){
-
-
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'RTMMI-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        ReferenceDocument::create([
-                            'reference_id' => $rtmmi->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-            }
-        }
-
         $accomplished = DB::select("CALL get_dropdown_name_by_id(".$rtmmi->category.")");
 
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Had updated the '.$rtmmi->category.' entitled "'.$rtmmi->title.'".');
+        LogActivity::addToLog('Had updated the '.$rtmmi->category.' entitled "'.$rtmmi->title.'".');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'RTMMI-', 'rtmmi.index');
+                if(is_string($fileName)) ReferenceDocument::create(['reference_id' => $rtmmi->id, 'filename' => $fileName]);
+                else return $fileName;
+            }
+        }
 
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                                 ->with('action', 'updated.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'RTMMI-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+        //                 ReferenceDocument::create([
+        //                     'reference_id' => $rtmmi->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
+                        
     }
 
     /**
@@ -374,7 +390,7 @@ class ReferenceController extends Controller
         $accomplished = collect($accomplished);
         $accomplishment = $accomplished->pluck('name');
 
-        \LogActivity::addToLog('Had deleted the '.$rtmmi->category.' entitled "'.$rtmmi->title.'".');
+        LogActivity::addToLog('Had deleted the '.$rtmmi->category.' entitled "'.$rtmmi->title.'".');
 
         return redirect()->route('rtmmi.index')->with('edit_rtmmi_success', ucfirst($accomplishment[0]))
                             ->with('action', 'deleted.');
@@ -389,7 +405,7 @@ class ReferenceController extends Controller
         ReferenceDocument::where('filename', $filename)->delete();
         // Storage::delete('documents/'.$filename);
 
-        \LogActivity::addToLog('Had deleted a document of a reference, textbook, module, monograph, or IM.');
+        LogActivity::addToLog('Had deleted a document of a reference, textbook, module, monograph, or IM.');
 
         return true;
     }

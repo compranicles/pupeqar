@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\AcademicDevelopment;
 
+use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
@@ -23,6 +24,7 @@ use App\Models\{
     Maintenance\Department,
     Maintenance\Quarter,
 };
+use App\Services\CommonService;
 use App\Services\DateContentService;
 use Exception;
 
@@ -30,9 +32,11 @@ class CollegeDepartmentAwardController extends Controller
 {
 
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
     /**
      * Display a listing of the resource.
@@ -123,35 +127,43 @@ class CollegeDepartmentAwardController extends Controller
         $college_department_award = CollegeDepartmentAward::create($input);
         $college_department_award->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'CDA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
+        LogActivity::addToLog('Had added an award and recognition received by the college and dept.');
 
-                        CollegeDepartmentAwardDocument::create([
-                            'college_department_award_id' => $college_department_award->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'CDA-', 'college-department-award.index');
+                if(is_string($fileName)) CollegeDepartmentAwardDocument::create(['college_department_award_id' => $college_department_award->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
-        \LogActivity::addToLog('Had added an award and recognition received by the college and dept.');
-
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been added.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'CDA-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+
+        //                 CollegeDepartmentAwardDocument::create([
+        //                     'college_department_award_id' => $college_department_award->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -282,38 +294,43 @@ class CollegeDepartmentAwardController extends Controller
 
         $college_department_award->update($input);
 
-        if($request->has('document')){
+        LogActivity::addToLog('Had updated an award and recognition received by the college and dept.');
 
-            try {
-                $documents = $request->input('document');
-                foreach($documents as $document){
-                    $temporaryFile = TemporaryFile::where('folder', $document)->first();
-                    if($temporaryFile){
-                        $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-                        $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-                        $ext = $info['extension'];
-                        $fileName = 'CDAward-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-                        $newPath = "documents/".$fileName;
-                        Storage::move($temporaryPath, $newPath);
-                        Storage::deleteDirectory("documents/tmp/".$document);
-                        $temporaryFile->delete();
-    
-                        CollegeDepartmentAwardDocument::create([
-                            'college_department_award_id' => $college_department_award->id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                }
-            } catch (Exception $th) {
-                return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'CDA-', 'college-department-award.index');
+                if(is_string($fileName)) CollegeDepartmentAwardDocument::create(['college_department_award_id' => $college_department_award->id, 'filename' => $fileName]);
+                else return $fileName;
             }
-
-           
         }
 
-        \LogActivity::addToLog('Had updated an award and recognition received by the college and dept.');
-
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been updated.');
+
+        // if($request->has('document')){
+        //     try {
+        //         $documents = $request->input('document');
+        //         foreach($documents as $document){
+        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
+        //             if($temporaryFile){
+        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
+        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
+        //                 $ext = $info['extension'];
+        //                 $fileName = 'CDAward-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
+        //                 $newPath = "documents/".$fileName;
+        //                 Storage::move($temporaryPath, $newPath);
+        //                 Storage::deleteDirectory("documents/tmp/".$document);
+        //                 $temporaryFile->delete();
+    
+        //                 CollegeDepartmentAwardDocument::create([
+        //                     'college_department_award_id' => $college_department_award->id,
+        //                     'filename' => $fileName,
+        //                 ]);
+        //             }
+        //         }
+        //     } catch (Exception $th) {
+        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
+        //     }
+        // }
     }
 
     /**
@@ -336,7 +353,7 @@ class CollegeDepartmentAwardController extends Controller
         CollegeDepartmentAwardDocument::where('college_department_award_id', $college_department_award->id)->delete();
         $college_department_award->delete();
 
-        \LogActivity::addToLog('Had deleted an award and recognition received by the college and dept.');
+        LogActivity::addToLog('Had deleted an award and recognition received by the college and dept.');
 
         return redirect()->route('college-department-award.index')->with('award_success', 'Awards and recognition received by the college and department has been deleted.');
     }
@@ -348,7 +365,7 @@ class CollegeDepartmentAwardController extends Controller
             return view('inactive');
         CollegeDepartmentAwardDocument::where('filename', $filename)->delete();
 
-        \LogActivity::addToLog('Had deleted a document of an award and recognition received by the college and dept.');
+        LogActivity::addToLog('Had deleted a document of an award and recognition received by the college and dept.');
 
         return true;
     }
