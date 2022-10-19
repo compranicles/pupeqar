@@ -50,7 +50,7 @@ class StudentTrainingController extends Controller
                         ->select('student_trainings.*', 'colleges.name as college_name')
                         ->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($student_trainings as $student_training) {
             if (LockController::isLocked($student_training->id, 19))

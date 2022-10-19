@@ -51,7 +51,7 @@ class SeminarAndTrainingController extends Controller
         $savedSeminars = HRIS::where('hris_type', '4')->where('user_id', $user->id)->pluck('hris_id')->all();
         $savedTrainings = HRIS::where('hris_type', '5')->where('user_id', $user->id)->pluck('hris_id')->all();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $submitRole = array();
         foreach ($developmentFinal as $development) {
             $id = HRIS::where('hris_id', $development->EmployeeTrainingProgramID)->where('hris_type', 4)->where('user_id', $user->id)->pluck('hris_id')->first();

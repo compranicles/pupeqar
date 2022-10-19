@@ -68,8 +68,8 @@ class CopyrightedController extends Controller
         }
         $values = array_merge($research->toArray(), $values->toArray());
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
             if (LockController::isLocked($values['id'], 7)) {
                 $submissionStatus[7][$values['id']] = 1;

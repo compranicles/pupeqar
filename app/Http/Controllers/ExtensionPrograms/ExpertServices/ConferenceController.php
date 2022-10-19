@@ -54,9 +54,9 @@ class ConferenceController extends Controller
                                         ->select(DB::raw('expert_service_conferences.*, dropdown_options.name as nature, colleges.name as college_name'))
                                         ->orderBy('expert_service_conferences.updated_at', 'desc')
                                         ->get();
-
-        $submissionStatus = [];
-        $submitRole = "";
+                                        
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($expertServicesConference as $conference) {
             if (LockController::isLocked($conference->id, 10)) {

@@ -48,8 +48,8 @@ class MobilityController extends Controller
                                 ->select(DB::raw('mobilities.*, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($mobilities as $mobility) {
             if($mobility->classification_of_person == '298'){

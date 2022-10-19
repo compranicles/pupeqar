@@ -51,7 +51,7 @@ class ViableProjectController extends Controller
                             ->select('viable_projects.*', 'colleges.name as college_name')
                             ->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($viable_projects as $viable_project) {
             if (LockController::isLocked($viable_project->id, 20))

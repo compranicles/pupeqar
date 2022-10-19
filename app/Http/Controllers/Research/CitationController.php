@@ -57,8 +57,8 @@ class CitationController extends Controller
                     ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                     ->select('research.*', 'dropdown_options.name as status_name')->first();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($researchcitations as $citation) {
             if (LockController::isLocked($citation->id, 5)) {

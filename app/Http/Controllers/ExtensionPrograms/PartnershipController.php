@@ -51,8 +51,8 @@ class PartnershipController extends Controller
                             ->select(DB::raw('partnerships.*, colleges.name as college_name'))
                             ->orderBy('partnerships.updated_at', 'desc')->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($partnerships as $partnership) {
             if (LockController::isLocked($partnership->id, 13)) {

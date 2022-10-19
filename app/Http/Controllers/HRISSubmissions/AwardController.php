@@ -46,8 +46,8 @@ class AwardController extends Controller
         $awardFinal = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeOutstandingAchievementByEmpCode N'$user->emp_code'");
         $savedReports = HRIS::where('hris_type', '2')->where('user_id', $user->id)->pluck('hris_id')->all();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         foreach ($awardFinal as $award) {
             $id = HRIS::where('hris_id', $award->EmployeeOutstandingAchievementID)->where('hris_type', 2)->where('user_id', $user->id)->pluck('hris_id')->first();
             if($id != ''){

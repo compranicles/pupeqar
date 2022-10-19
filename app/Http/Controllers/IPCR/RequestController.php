@@ -25,9 +25,11 @@ use Exception;
 class RequestController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -56,7 +58,7 @@ class RequestController extends Controller
                                 ->distinct()
                                 ->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($requests as $request) {
             if (LockController::isLocked($request->id, 17))

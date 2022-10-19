@@ -31,9 +31,11 @@ use App\Services\DateContentService;
 class InventionController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -57,8 +59,8 @@ class InventionController extends Controller
                         ->orderBy('inventions.updated_at', 'DESC')
                         ->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($inventions as $invention) {
             if (LockController::isLocked($invention->id, 8)) {

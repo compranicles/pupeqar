@@ -32,9 +32,11 @@ use Exception;
 class OtherAccomplishmentController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
 
     /**
@@ -54,8 +56,8 @@ class OtherAccomplishmentController extends Controller
                                 ->select(DB::raw('other_accomplishments.*, dropdown_options.name as accomplishment_level, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($otherAccomplishments as $otherAccomplishment) {
             if (LockController::isLocked($otherAccomplishment->id, 38)) {

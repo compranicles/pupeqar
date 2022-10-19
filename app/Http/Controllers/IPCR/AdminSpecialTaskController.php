@@ -25,9 +25,11 @@ use Exception;
 class AdminSpecialTaskController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
     }
     /**
      * Display a listing of the resource.
@@ -51,8 +53,8 @@ class AdminSpecialTaskController extends Controller
             ->distinct()
             ->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($adminSpecialTasks as $adminTask) {
             if (LockController::isLocked($adminTask->id, 29)) {

@@ -50,7 +50,7 @@ class CollegeDepartmentAwardController extends Controller
                                     ->select('college_department_awards.*', 'colleges.name as college_name')
                                     ->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($college_department_awards as $college_department_award) {
             if (LockController::isLocked($college_department_award->id, 21))

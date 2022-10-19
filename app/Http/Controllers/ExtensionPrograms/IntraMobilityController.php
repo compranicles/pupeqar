@@ -48,8 +48,8 @@ class IntraMobilityController extends Controller
                                 ->select(DB::raw('intra_mobilities.*, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($intraMobilities as $intraMobility) {
             if($intraMobility->classification_of_person == '298'){

@@ -50,8 +50,8 @@ class UtilizationController extends Controller
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($researchutilizations as $utilization) {
             if (LockController::isLocked($utilization->id, 6)) {

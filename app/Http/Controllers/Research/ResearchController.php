@@ -389,8 +389,8 @@ class ResearchController extends Controller
 
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
             if (LockController::isLocked($research->id, 1)) {
                 $submissionStatus[1][$research->id] = 1;

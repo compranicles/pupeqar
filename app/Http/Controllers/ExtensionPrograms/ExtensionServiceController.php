@@ -72,8 +72,8 @@ class ExtensionServiceController extends Controller
             ->where('extension_invites.status', null)
             ->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($extensionServices as $extension) {
             if (LockController::isLocked($extension->id, 12)) {

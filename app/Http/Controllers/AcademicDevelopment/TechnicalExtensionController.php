@@ -48,7 +48,7 @@ class TechnicalExtensionController extends Controller
                                 ->select(DB::raw('technical_extensions.*'))
                                 ->orderBy('technical_extensions.updated_at', 'desc')->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($technical_extensions as $technical_extension) {
             if (LockController::isLocked($technical_extension->id, 23))

@@ -72,8 +72,8 @@ class PresentationController extends Controller
 
         $value = array_merge($value, $values);
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
             if (LockController::isLocked($values['id'], 4)) {
                 $submissionStatus[4][$values['id']] = 1;

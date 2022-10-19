@@ -55,8 +55,8 @@ class ConsultantController extends Controller
                                         ->orderBy('expert_service_consultants.updated_at', 'desc')
                                         ->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($expertServicesConsultant as $consultant) {
             if (LockController::isLocked($consultant->id, 9)) {

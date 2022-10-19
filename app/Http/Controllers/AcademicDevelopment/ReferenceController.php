@@ -51,8 +51,8 @@ class ReferenceController extends Controller
                                     ->orderBy('references.updated_at', 'desc')
                                     ->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($allRtmmi as $rtmmi) {
             if (LockController::isLocked($rtmmi->id, 15)) {

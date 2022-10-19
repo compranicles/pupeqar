@@ -53,9 +53,9 @@ class AcademicController extends Controller
                                         ->select(DB::raw('expert_service_academics.*, dropdown_options.name as classification, colleges.name as college_name'))
                                         ->orderBy('expert_service_academics.updated_at', 'desc')
                                         ->get();
-
-        $submissionStatus = [];
-        $submitRole = "";
+                                        
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($expertServicesAcademic as $academic) {
             if (LockController::isLocked($academic->id, 11)) {

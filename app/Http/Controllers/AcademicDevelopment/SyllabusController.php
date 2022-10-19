@@ -58,8 +58,8 @@ class SyllabusController extends Controller
                     ->distinct()
                     ->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($syllabi as $syllabus) {
             if (LockController::isLocked($syllabus->id, 16)) {
@@ -140,6 +140,7 @@ class SyllabusController extends Controller
                 $documents = $request->input('document');
                 foreach($documents as $document){
                     $temporaryFile = TemporaryFile::where('folder', $document)->first();
+                    dd($temporaryFile);
                     if($temporaryFile){
                         $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
                         $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);

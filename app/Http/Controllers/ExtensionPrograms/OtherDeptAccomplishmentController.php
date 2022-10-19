@@ -54,7 +54,7 @@ class OtherDeptAccomplishmentController extends Controller
                                 ->select(DB::raw('other_dept_accomplishments.*, dropdown_options.name as accomplishment_level, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($otherAccomplishments as $otherAccomplishment) {
             if (LockController::isLocked($otherAccomplishment->id, 39))

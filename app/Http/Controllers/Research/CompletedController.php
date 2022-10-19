@@ -70,8 +70,8 @@ class CompletedController extends Controller
 
         $value = array_merge($value, $values);
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
             if (LockController::isLocked($value['id'], 2)) {
                 $submissionStatus[2][$value['id']] = 1;
