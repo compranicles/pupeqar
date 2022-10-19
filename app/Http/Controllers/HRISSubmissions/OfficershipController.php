@@ -928,6 +928,16 @@ class OfficershipController extends Controller
             }
         }
 
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, "", 'HRIS-OM', 'submissions.officership.index');
+                if(is_string($fileName)){
+                    HRISDocument::create(['hris_form_id' => 3, 'reference_id' => $id, 'filename' => $fileName]);
+                    array_push($filenames, $fileName);
+                } else return $fileName;
+            }
+        }
+
         $FORFILESTORE->report_documents = json_encode(collect($filenames));
         $FORFILESTORE->save();
         

@@ -604,7 +604,7 @@ class AwardController extends Controller
             HRIS::where('id', $awardID)->delete();
         }
 
-        \LogActivity::addToLog('Had deleted a Outstanding Achievement.');
+        LogActivity::addToLog('Had deleted a Outstanding Achievement.');
 
         return redirect()->route('submissions.award.index')->with('success','The accomplishment has been deleted.');
     }

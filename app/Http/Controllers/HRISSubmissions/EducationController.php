@@ -1142,23 +1142,34 @@ class EducationController extends Controller
 
         $filenames = [];
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, "", 'HRIS-OAPS', 'submissions.educ.index');
-                if(is_string($fileName)) {
+                if(is_string($fileName)){
                     HRISDocument::create(['hris_form_id' => 1, 'reference_id' => $educID, 'filename' => $fileName]);
                     array_push($filenames, $fileName);
-                } else {
-                    HRISDocument::where('reference_id', $educID)->delete();
-                    return $fileName;
-                }
+                } else return $fileName;
             }
         }
         
         $FORFILESTORE->report_documents = json_encode(collect($filenames));
         $FORFILESTORE->save();
 
+        return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been submitted.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, "", 'HRIS-OAPS', 'submissions.educ.index');
+        //         if(is_string($fileName)) {
+        //             HRISDocument::create(['hris_form_id' => 1, 'reference_id' => $educID, 'filename' => $fileName]);
+        //             array_push($filenames, $fileName);
+        //         } else {
+        //             HRISDocument::where('reference_id', $educID)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
     
         // if($request->has('document')){
         //     try {
@@ -1184,6 +1195,6 @@ class EducationController extends Controller
         //     }
         // }
 
-        return redirect()->route('submissions.educ.index')->with('success','The accomplishment has been submitted.');
+
     }
 }
