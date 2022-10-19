@@ -58,8 +58,8 @@ class CitationController extends Controller
                     ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                     ->select('research.*', 'dropdown_options.name as status_name')->first();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($researchcitations as $citation) {
             if (LockController::isLocked($citation->id, 5)) {
@@ -71,9 +71,10 @@ class CitationController extends Controller
             if (empty($reportdata->getDocuments(5, $citation->id)))
                 $submissionStatus[5][$citation->id] = 2;
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
         return view('research.citation.index', compact('research', 'researchcitations',
-            'currentQuarterYear', 'submissionStatus', 'submitRole'));
+            'currentQuarterYear', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**
@@ -222,8 +223,9 @@ class CitationController extends Controller
                 }
             }
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
         
-        return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        return view('research.citation.show', compact('research', 'researchFields', 'values', 'researchDocuments', 'firstResearch'));
     }
 
     /**

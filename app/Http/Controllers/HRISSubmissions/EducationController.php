@@ -60,8 +60,8 @@ class EducationController extends Controller
 
         $savedReports = HRIS::where('hris_type', '1')->where('user_id', $user->id)->pluck('hris_id')->all();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         foreach ($educationFinal as $education) {
             $id = HRIS::where('hris_id', $education->EmployeeEducationBackgroundID)->where('hris_type', 1)->where('user_id', $user->id)->pluck('hris_id')->first();
             $educationData = $db_ext->select("SET NOCOUNT ON; EXEC GetEmployeeEducationBackgroundByEmpCodeAndID N'$user->emp_code', '$education->EmployeeEducationBackgroundID'");

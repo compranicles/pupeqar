@@ -50,8 +50,8 @@ class UtilizationController extends Controller
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($researchutilizations as $utilization) {
             if (LockController::isLocked($utilization->id, 6)) {
@@ -63,8 +63,10 @@ class UtilizationController extends Controller
             if (empty($reportdata->getDocuments(6, $utilization->id)))
                 $submissionStatus[6][$utilization->id] = 2;
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
+
         return view('research.utilization.index', compact('research', 'researchutilizations',
-            'currentQuarterYear', 'submissionStatus', 'submitRole'));
+            'currentQuarterYear', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**
@@ -210,8 +212,9 @@ class UtilizationController extends Controller
                 }
             }
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
-        return view('research.utilization.show', compact('research', 'researchFields', 'values', 'researchDocuments'));
+        return view('research.utilization.show', compact('research', 'researchFields', 'values', 'researchDocuments', 'firstResearch'));
     }
 
     /**

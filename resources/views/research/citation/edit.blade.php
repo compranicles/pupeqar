@@ -11,6 +11,7 @@
             <i class="bi bi-exclamation-circle"></i> Remarks: {{ $deniedDetails->reason }}
         </div>
         @endif
+        <h4>Research Citations - {{ $research['title'] }}</h4>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

@@ -60,8 +60,8 @@ class InventionController extends Controller
                         ->orderBy('inventions.updated_at', 'DESC')
                         ->get();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($inventions as $invention) {
             if (LockController::isLocked($invention->id, 8)) {

@@ -53,7 +53,7 @@ class CommunityEngagementController extends Controller
                                 ->select(DB::raw('community_engagements.*, colleges.name as college_name'))
                                 ->orderBy('updated_at', 'desc')->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($communityEngagements as $communityEngagement) {
             if (LockController::isLocked($communityEngagement->id, 37))

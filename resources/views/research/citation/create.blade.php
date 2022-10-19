@@ -5,6 +5,7 @@
                 @include('research.navigation-bar', ['research_code' => $research['id'], 'research_status' => $research['status']])
             </div>
         </div>
+        <h4>Research Citations - {{ $research['title'] }}</h4>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

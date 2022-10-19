@@ -1,4 +1,8 @@
-<h3 class="font-weight-bold mb-2">Research/Book Chapter</h3>
+@if(isset($research->title))
+    <h3 class="font-weight-bold mb-2">Research/Book Chapter - {{ $research->title }}</h3>
+@else
+    <h3 class="font-weight-bold mb-2">Research/Book Chapter - {{ $research['title'] }}</h3>
+@endif
 <p>
     <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research</a>
 </p>

@@ -70,8 +70,8 @@ class CompletedController extends Controller
 
         $value = array_merge($value, $values);
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
             if (LockController::isLocked($value['id'], 2)) {
                 $submissionStatus[2][$value['id']] = 1;
@@ -108,9 +108,10 @@ class CompletedController extends Controller
                 }
             }
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
         return view('research.completed.index', compact('research', 'researchFields',
-            'value', 'researchDocuments', 'submissionStatus', 'submitRole'));
+            'value', 'researchDocuments', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**

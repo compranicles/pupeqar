@@ -70,8 +70,8 @@ class PublicationController extends Controller
 
         $value = array_merge($value, $values);
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
             if (LockController::isLocked($values['id'], 3)) {
                 $submissionStatus[3][$values['id']] = 1;
@@ -108,9 +108,10 @@ class PublicationController extends Controller
                 }
             }
         }
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
         return view('research.publication.index', compact('research', 'researchFields',
-            'value', 'researchDocuments', 'submissionStatus', 'submitRole'));
+            'value', 'researchDocuments', 'submissionStatus', 'submitRole', 'firstResearch'));
     }
 
     /**

@@ -12,6 +12,7 @@
         @endif
         <div class="row">
             <div class="col-md-12">
+                <h4>Research Citations - {{ $research->title }}</h4>
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="row">
@@ -28,9 +29,9 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="col-md-6">
+                                <div class="col-md-6">
                                 {{-- ADD Fields --}}
-                                @if ($research->nature_of_involvement == 11 || $research->nature_of_involvement == 224)
+                                @if ($research->id == $firstResearch['id'])
                                     <a href="{{ route('research.citation.create', $research->id) }}" class="btn btn-success">
                                         <i class="fas fa-plus"></i> Add Citation
                                     </a>

@@ -74,8 +74,8 @@ class AttendanceFunctionController extends Controller
 
         $roles = UserRole::where('user_id', auth()->id())->pluck('role_id')->all();
 
-        $submissionStatus = [];
-        $submitRole = "";
+        $submissionStatus = array();
+        $submitRole = array();
         $reportdata = new ReportDataController;
         foreach ($attendedFunctions as $attendedFunction) {
             if (LockController::isLocked($attendedFunction->id, 33)) {

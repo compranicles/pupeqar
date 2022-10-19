@@ -50,7 +50,7 @@ class OutreachProgramController extends Controller
                                 ->select(DB::raw('outreach_programs.*'))
                                 ->orderBy('outreach_programs.updated_at', 'desc')->get();
 
-        $submissionStatus = [];
+        $submissionStatus = array();
         $reportdata = new ReportDataController;
         foreach ($outreach_programs as $outreach_program) {
             if (LockController::isLocked($outreach_program->id, 22))
