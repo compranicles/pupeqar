@@ -20,6 +20,7 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Services\CommonService;
 use Exception;
 
 class AdminSpecialTaskController extends Controller
@@ -134,19 +135,31 @@ class AdminSpecialTaskController extends Controller
         $taskdata = AdminSpecialTask::create($input);
         $taskdata->update(['user_id' => auth()->id()]);
 
+        LogActivity::addToLog('Had added a Special Task (Admin).');
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'ST-', 'admin-special-tasks.index');
-                if(is_string($fileName)) {
-                    AdminSpecialTaskDocument::create(['special_task_id' => $taskdata->id, 'filename' => $fileName]);
-                } else {
-                    AdminSpecialTaskDocument::where('special_task_id', $taskdata->id)->delete();
-                    return $fileName;
-                }
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ST-', 'admin-special-tasks.index');
+                if(is_string($fileName)) AdminSpecialTaskDocument::create(['special_task_id' => $taskdata->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
+
+        return redirect()->route('admin-special-tasks.index')->with('success', 'Your Accomplishment in Special Tasks has been saved.');
+
+        
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'ST-', 'admin-special-tasks.index');
+        //         if(is_string($fileName)) {
+        //             AdminSpecialTaskDocument::create(['special_task_id' => $taskdata->id, 'filename' => $fileName]);
+        //         } else {
+        //             AdminSpecialTaskDocument::where('special_task_id', $taskdata->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
 
         // if($request->has('document')){
             // try {
@@ -174,8 +187,6 @@ class AdminSpecialTaskController extends Controller
             // }
         // }
 
-        LogActivity::addToLog('Had added a Special Task (Admin).');
-        return redirect()->route('admin-special-tasks.index')->with('success', 'Your Accomplishment in Special Tasks has been saved.');
     }
 
     /**
@@ -307,19 +318,29 @@ class AdminSpecialTaskController extends Controller
 
         $admin_special_task->update($input);
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'ST-', 'admin-special-tasks.index');
-                if(is_string($fileName)) {
-                    AdminSpecialTaskDocument::create(['special_task_id' => $admin_special_task->id, 'filename' => $fileName]);
-                } else {
-                    AdminSpecialTaskDocument::where('special_task_id', $admin_special_task->id)->delete();
-                    return $fileName;
-                }
+        LogActivity::addToLog('Had updated a Special Task (Admin).');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'ST-', 'admin-special-tasks.index');
+                if(is_string($fileName)) AdminSpecialTaskDocument::create(['special_task_id' => $admin_special_task->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
+        return redirect()->route('admin-special-tasks.index')->with('success', 'Your accomplishment in Special Task has been updated.');
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'ST-', 'admin-special-tasks.index');
+        //         if(is_string($fileName)) {
+        //             AdminSpecialTaskDocument::create(['special_task_id' => $admin_special_task->id, 'filename' => $fileName]);
+        //         } else {
+        //             AdminSpecialTaskDocument::where('special_task_id', $admin_special_task->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
         // if($request->has('document')){
         //     try {
         //         $documents = $request->input('document');
@@ -345,9 +366,6 @@ class AdminSpecialTaskController extends Controller
         //     }
         // }
 
-        LogActivity::addToLog('Had updated a Special Task (Admin).');
-
-        return redirect()->route('admin-special-tasks.index')->with('success', 'Your accomplishment in Special Task has been updated.');
     }
 
     /**

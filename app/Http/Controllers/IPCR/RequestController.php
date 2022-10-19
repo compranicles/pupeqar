@@ -20,6 +20,7 @@ use App\Models\FormBuilder\DropdownOption;
 use App\Http\Controllers\StorageFileController;
 use App\Http\Controllers\Maintenances\LockController;
 use App\Http\Controllers\Reports\ReportDataController;
+use App\Services\CommonService;
 use Exception;
 
 class RequestController extends Controller
@@ -133,19 +134,30 @@ class RequestController extends Controller
         $requestdata = RequestModel::create($input);
         $requestdata->update(['user_id' => auth()->id()]);
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'R-', 'request.index');
-                if(is_string($fileName)) {
-                    RequestDocument::create(['request_id' => $requestdata->id, 'filename' => $fileName]);
-                } else {
-                    RequestDocument::where('request_id', $requestdata->id)->delete();
-                    return $fileName;
-                }
+        LogActivity::addToLog('Had added a Request & Queries Acted Upon.');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'R-', 'request.index');
+                if(is_string($fileName)) RequestDocument::create(['request_id' => $requestdata->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
 
+        return redirect()->route('request.index')->with('request_success', 'Your Accomplishment in Request & Queries Acted Upon has been saved.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'R-', 'request.index');
+        //         if(is_string($fileName)) {
+        //             RequestDocument::create(['request_id' => $requestdata->id, 'filename' => $fileName]);
+        //         } else {
+        //             RequestDocument::where('request_id', $requestdata->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
         // if($request->has('document')){
         //     try {
         //         $documents = $request->input('document');
@@ -170,10 +182,6 @@ class RequestController extends Controller
         //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         //     }
         // }
-
-        LogActivity::addToLog('Had added a Request & Queries Acted Upon.');
-
-        return redirect()->route('request.index')->with('request_success', 'Your Accomplishment in Request & Queries Acted Upon has been saved.');
     }
 
     /**
@@ -304,18 +312,30 @@ class RequestController extends Controller
 
         $request->update($input);
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'R-', 'request.index');
-                if(is_string($fileName)) {
-                    RequestDocument::create(['request_id' => $request->id,'filename' => $fileName]);
-                } else {
-                    RequestDocument::where('request_id', $request->id)->delete();
-                    return $fileName;
-                }
+        LogActivity::addToLog('Had updated a Request & Queries Acted Upon.');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'R-', 'request.index');
+                if(is_string($fileName)) RequestDocument::create(['request_id' => $requestdata->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
+
+        return redirect()->route('request.index')->with('request_success', 'Your accomplishment in Request & Queries Acted Upon has been updated.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'R-', 'request.index');
+        //         if(is_string($fileName)) {
+        //             RequestDocument::create(['request_id' => $request->id,'filename' => $fileName]);
+        //         } else {
+        //             RequestDocument::where('request_id', $request->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
 
         // if($requestdata->has('document')){
         //     try {
@@ -331,7 +351,6 @@ class RequestController extends Controller
         //                 Storage::move($temporaryPath, $newPath);
         //                 Storage::deleteDirectory("documents/tmp/".$document);
         //                 $temporaryFile->delete();
-
         //                 RequestDocument::create([
         //                     'request_id' => $request->id,
         //                     'filename' => $fileName,
@@ -341,13 +360,7 @@ class RequestController extends Controller
         //     } catch (Exception $th) {
         //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         //     }
-
-            
         // }
-
-        LogActivity::addToLog('Had updated a Request & Queries Acted Upon.');
-
-        return redirect()->route('request.index')->with('request_success', 'Your accomplishment in Request & Queries Acted Upon has been updated.');
     }
 
     /**

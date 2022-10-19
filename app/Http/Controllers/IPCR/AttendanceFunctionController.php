@@ -369,18 +369,30 @@ class AttendanceFunctionController extends Controller
 
         $attendance_function->update($input);
 
-        if($request->has('document')){
-            $documents = $request->input('document');
-            foreach($documents as $document){
-                $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'AF-', 'attendance-function.index');
-                if(is_string($fileName)) {
-                    AttendanceFunctionDocument::create(['attendance_function_id' => $attendance_function->id, 'filename' => $fileName]);
-                } else {
-                    AttendanceFunctionDocument::where('attendance_function_id', $attendance_function->id)->delete();
-                    return $fileName;
-                }
+        LogActivity::addToLog('Had updated a Attendance in University and College Function).');
+
+        if(!empty($request->file(['document']))){      
+            foreach($request->file(['document']) as $document){
+                $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), 'AF-', 'attendance-function.index');
+                if(is_string($fileName)) AttendanceFunctionDocument::create(['attendance_function_id' => $attendance_function->id, 'filename' => $fileName]);
+                else return $fileName;
             }
         }
+
+        return redirect()->route('attendance-function.index')->with('success', 'Your Accomplishment in Attendance in University and College Functions has been updated.');
+
+        // if($request->has('document')){
+        //     $documents = $request->input('document');
+        //     foreach($documents as $document){
+        //         $fileName = $this->commonService->fileUploadHandler($document, $this->storageFileController->abbrev($request->input('description')), 'AF-', 'attendance-function.index');
+        //         if(is_string($fileName)) {
+        //             AttendanceFunctionDocument::create(['attendance_function_id' => $attendance_function->id, 'filename' => $fileName]);
+        //         } else {
+        //             AttendanceFunctionDocument::where('attendance_function_id', $attendance_function->id)->delete();
+        //             return $fileName;
+        //         }
+        //     }
+        // }
 
         // if($request->has('document')){
         //     try {
@@ -408,10 +420,6 @@ class AttendanceFunctionController extends Controller
         //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
         //     }
         // }
-
-        LogActivity::addToLog('Had updated a Attendance in University and College Function).');
-
-        return redirect()->route('attendance-function.index')->with('success', 'Your Accomplishment in Attendance in University and College Functions has been updated.');
     }
 
     /**
