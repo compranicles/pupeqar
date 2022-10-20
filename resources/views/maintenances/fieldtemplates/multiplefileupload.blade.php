@@ -6,7 +6,7 @@
             Note: Finish the uploading of files before saving.
         </span> --}}
         <input type="file"
-            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1 ml-3"
+            class="{{ $errors->has($fieldInfo->name) ? 'is-invalid' : '' }} filepond mb-n1"
             name="{{ $fieldInfo->name }}[]"
             id="{{ $fieldInfo->name }}"
             multiple
@@ -29,37 +29,40 @@
 
 @push('scripts')
     <script>
+    
         // var url = "{{ url('upload') }}";
-        // FilePond.registerPlugin(
+        FilePond.registerPlugin(
 
-        //     // encodes the file as base64 data
-        //     FilePondPluginFileEncode,
+            // encodes the file as base64 data
+            FilePondPluginFileEncode,
 
-        //     // validates the size of the file
-        //     FilePondPluginFileValidateSize,
+            // validates the size of the file
+            FilePondPluginFileValidateSize,
 
-        //     // corrects mobile image orientation
-        //     FilePondPluginImageExifOrientation,
+            // corrects mobile image orientation
+            FilePondPluginImageExifOrientation,
 
-        //     // previews dropped images
-        //     FilePondPluginImagePreview,
-        //     FilePondPluginFileValidateType,
+            // previews dropped images
+            FilePondPluginImagePreview,
+            FilePondPluginFileValidateType,
 
-        // );
+        );
         // Create a FilePond instance
-        // const pondDocument = FilePond.create(document.querySelector('input[name="{{ $fieldInfo->name }}[]"]'));
+        const pondDocument = FilePond.create(document.querySelector('input[name="{{ $fieldInfo->name }}[]"]'), {
+            storeAsFile: true,
+        });
         // pondDocument.setOptions({
-        //     acceptedFileTypes: ['application/pdf', 'image'],   ///jpeg', 'image/png', 'image/x-png', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'
-        //     server: {
+        //     acceptedFileTypes: ['application/pdf', 'image/*'],   ///jpeg', 'image/png', 'image/x-png', 'image/pjpeg', 'image/jpg', 'image/jfif', 'image/pjp'
+        //     // server: {
                 
-        //         timeout: 20000,
-        //         process: {
-        //             url: url,
-        //             headers: {
-        //                 'X-CSRF-TOKEN': '{{ csrf_token() }}',
-        //             }
-        //         },
-        //     }
+        //     //     timeout: 20000,
+        //     //     process: {
+        //     //         // url: url,
+        //     //         headers: {
+        //     //             'X-CSRF-TOKEN': '{{ csrf_token() }}',
+        //     //         }
+        //     //     },
+        //     // }
           
         // });
     </script>

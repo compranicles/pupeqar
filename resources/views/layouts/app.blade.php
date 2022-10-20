@@ -80,6 +80,24 @@
                     @endif
                 </div>
             </div>
+                @if ($message = Session::get('error'))
+                    <div class="modal fade" id="modal">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header text-light bg-danger">
+                                    <h5 class="modal-title bold">Action Failed</h5>
+                                    <button type="button" id="error-modal-button-1" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    {{ $message }}
+                                </div>  
+                            </div>
+                        </div>
+                    </div>
+                @endif
+
                 {{ $slot }}
         </main>
 
@@ -124,3 +142,19 @@
         </script>
     </body>
 </html>
+
+<script>
+    $(window).on('load',function(){
+        const delayMs = 500; // delay in milliseconds
+        setTimeout(function(){
+            $('#modal').modal('show');
+        }, delayMs);
+
+        $("#error-modal-button-1").click(function() {
+            $('#modal').modal('hide');
+        }); 
+        $("#error-modal-button-2").click(function() {
+            $('#modal').modal('hide');
+        });
+    });
+</script>

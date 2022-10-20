@@ -8,11 +8,6 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    @if ($message = Session::get('error'))
-                        <div class="alert alert-danger">
-                            {{ $message }}
-                        </div>
-                    @endif
                     <p>
                         <a class="back_link" href="{{ route('submissions.award.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Outstanding Awards and Achievements</a>
                     </p>

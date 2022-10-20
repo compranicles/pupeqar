@@ -9,9 +9,7 @@
 namespace App\Services;
 
 use App\Http\Controllers\StorageFileController;
-use App\Models\TemporaryFile;
 use Exception;
-use Illuminate\Support\Facades\Storage;
 
 class CommonService {
 
@@ -42,15 +40,12 @@ class CommonService {
         $fileDesc = $description == "" ? "" : $this->storageFileController->abbrev($description);
         $fileName = "";
         try {
-            // $original = $file->getClientOriginalName();
             $fileName = $additiveName . $fileDesc . '-' . now()->timestamp.uniqid() . '.' .  $file->extension();
             $file->storeAs('documents', $fileName, 'local');
             return $fileName;
 
         } catch (\Throwable $error) {
-            return redirect()->route($route)->with( 'error', 
-                $error->getMessage() == "1" ? "Entry was saved but unable to upload documents, Please try reuploading the documents!" : 'Request timeout, Unable to upload documents, Please try again later! : '. $error->getMessage()
-            );
+            return redirect()->route($route)->with( 'error', 'Request timeout, Unable to upload documents, Please try again later! : '. $error->getMessage());  
         }
     }
 
