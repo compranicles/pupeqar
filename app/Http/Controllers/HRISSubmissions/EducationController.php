@@ -195,11 +195,11 @@ class EducationController extends Controller
             0,                                  //EmployeeEducationBackgroundID
             $emp_code,                          //EmpCode
             $request->level,                    //EducationLevelID
-            $request->degree ?? '',                   //Degree
+            $request->degree,                   //Degree
             $request->major ?? '',                    //Major
             $request->minor ?? '',                    //Minor
             $request->education_discipline,     //EducationDisciplineID
-            $request->school_name ?? '',              //SchoolName
+            $request->school_name,              //SchoolName
             $request->program_level,            //AccreditationLevelID
             $is_graduated,                      //IsGraduated
             $is_enrolled,                       //IsCurrentlyEnrolled
@@ -207,14 +207,14 @@ class EducationController extends Controller
             $request->units_earned ?? '',             //UnitsEarned
             $request->units_enrolled ?? '',           //UnitsEnrolled
             $request->from,                     //IncYearFrom
-            $request->to ?? '',                       //IncYearTo
+            $request->to,                       //IncYearTo
             $year_graduated ?? 0,            //YearGraduated
             $request->honors ?? '',                   //HonorsReceived
             $request->support_type,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
             $request->amount ?? 0,                   //Amount
             'image/pdf/files', //Remarks
-            $request->description ?? '', //AttachmentDescription
+            $request->description, //AttachmentDescription
             $document["image"], //Attachment
             $document['mimetype'], //MimeType
             $user->email                        //TransAccount
@@ -467,29 +467,29 @@ class EducationController extends Controller
             $id,                                  //EmployeeEducationBackgroundID
             $emp_code,                          //EmpCode
             $request->level,                    //EducationLevelID
-            $request->degree ?? '',                   //Degree
+            $request->degree,                   //Degree
             $request->major ?? '',                    //Major
             $request->minor ?? '',                    //Minor
-            $request->education_discipline,     //EducationDisciplineID
-            $request->school_name ?? '',              //SchoolName
-            $request->program_level,            //AccreditationLevelID
+            $request->education_discipline ?? 0,     //EducationDisciplineID
+            $request->school_name,              //SchoolName
+            $request->program_level ?? 0,            //AccreditationLevelID
             $is_graduated,                      //IsGraduated
             $is_enrolled,                       //IsCurrentlyEnrolled
-            $request->status,                   //EnrollmentStatusID
+            $request->status ?? 0,                   //EnrollmentStatusID
             $request->units_earned ?? '',             //UnitsEarned
             $request->units_enrolled ?? '',           //UnitsEnrolled
             $request->from,                     //IncYearFrom
-            $request->to ?? '',                       //IncYearTo
+            $request->to,                       //IncYearTo
             $year_graduated ?? 0,            //YearGraduated
             $request->honors ?? '',                   //HonorsReceived
-            $request->support_type,             //TypeOfSupportID
+            $request->support_type ?? 0,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
             $request->amount ?? 0,                   //Amount
             'image/pdf/files', //Remarks
-            $request->description ?? '', //AttachmentDescription
+            $request->description, //AttachmentDescription
             $document["image"], //Attachment
             $document['mimetype'], //MimeType
-            $user->email                              //TransAccount
+            $user->email                        //TransAccount
         ];
 
         $db_ext->select(
@@ -758,29 +758,29 @@ class EducationController extends Controller
             $id,                                  //EmployeeEducationBackgroundID
             $emp_code,                          //EmpCode
             $request->level,                    //EducationLevelID
-            $request->degree ?? '',                   //Degree
+            $request->degree,                   //Degree
             $request->major ?? '',                    //Major
             $request->minor ?? '',                    //Minor
-            $request->education_discipline,     //EducationDisciplineID
-            $request->school_name ?? '',              //SchoolName
-            $request->program_level,            //AccreditationLevelID
+            $request->education_discipline ?? 0,     //EducationDisciplineID
+            $request->school_name,              //SchoolName
+            $request->program_level ?? 0,            //AccreditationLevelID
             $is_graduated,                      //IsGraduated
             $is_enrolled,                       //IsCurrentlyEnrolled
-            $request->status,                   //EnrollmentStatusID
+            $request->status ?? 0,                   //EnrollmentStatusID
             $request->units_earned ?? '',             //UnitsEarned
             $request->units_enrolled ?? '',           //UnitsEnrolled
             $request->from,                     //IncYearFrom
-            $request->to ?? '',                       //IncYearTo
+            $request->to,                       //IncYearTo
             $year_graduated ?? 0,            //YearGraduated
             $request->honors ?? '',                   //HonorsReceived
-            $request->support_type,             //TypeOfSupportID
+            $request->support_type ?? 0,             //TypeOfSupportID
             $request->sponsor_name ?? '',             //Scholarship
             $request->amount ?? 0,                   //Amount
             'image/pdf/files', //Remarks
-            $request->description ?? '', //AttachmentDescription
+            $request->description, //AttachmentDescription
             $document["image"], //Attachment
             $document['mimetype'], //MimeType
-            $user->email                                 //TransAccount
+            $user->email                        //TransAccount
         ];
 
         $newid = $db_ext->select(
