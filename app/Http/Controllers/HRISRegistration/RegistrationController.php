@@ -134,7 +134,7 @@ class RegistrationController extends Controller
             array("college","2022-10-19","07:00 AM","01:00 PM",array(61,66,8,159,137)),
             array("college","2022-10-19","01:00 PM","07:00 PM",array(176,137,211,120,27,226,59,94,75)),
             array("college","2022-10-20","07:00 AM","01:00 PM",array(238,243,233,239)),
-            array("college","2022-10-20","01:00 PM","07:00 PM",array(25,36,40,274))
+            array("college","2022-10-20","01:00 PM","07:00 PM",array(25,36,40,274,18))
         );
 
         $dateToday = Carbon::today()->toDateString();
