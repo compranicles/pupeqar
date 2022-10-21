@@ -1350,10 +1350,10 @@ class SeminarAndTrainingController extends Controller
         if(is_null($development))
             $development = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '5')->first();
 
-        if(LockController::isLocked($development->id, 25))
+        if(LockController::isLocked($development->hris_id, 25))
             return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
 
-        if(LockController::isLocked($development->id, 26))
+        if(LockController::isLocked($development->hris_id, 26))
             return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
 
         if($development->hris_type == '4'){
