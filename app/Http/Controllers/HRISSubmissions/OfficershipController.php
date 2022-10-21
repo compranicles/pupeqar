@@ -144,7 +144,7 @@ class OfficershipController extends Controller
             $request->level, //LevelID
             $request->classification, //ClassificationID
             'image/pdf/files', //Remarks
-            $request->description, //AttachmentDescription
+            $request->description ?? '', //AttachmentDescription
             $document["image"], //Attachment
             $document['mimetype'], //MimeType
             $user->email
