@@ -625,7 +625,7 @@ class OfficershipController extends Controller
     public function check($id){
         $officership = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '3')->first();
 
-        if(LockController::isLocked($officership->id, 28))
+        if(LockController::isLocked($officership->hris_id, 28))
             return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
 
         if($this->submit($officership->id))

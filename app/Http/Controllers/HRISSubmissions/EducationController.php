@@ -870,7 +870,7 @@ class EducationController extends Controller
     public function check($id){
         $education = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '1')->first();
 
-        if(LockController::isLocked($education->id, 24))
+        if(LockController::isLocked($education->hris_id, 24))
             return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
 
         if($this->submit($education->id))

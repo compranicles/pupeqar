@@ -612,7 +612,7 @@ class AwardController extends Controller
     public function check($id){
         $award = HRIS::where('hris_id', $id)->where('user_id', auth()->id())->where('hris_type', '2')->first();
 
-        if(LockController::isLocked($award->id, 27))
+        if(LockController::isLocked($award->hris_id, 27))
             return redirect()->back()->with('cannot_access', 'Accomplishment already submitted.');
 
         if($this->submit($award->id))
