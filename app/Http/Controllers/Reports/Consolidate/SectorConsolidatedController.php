@@ -34,6 +34,9 @@ class SectorConsolidatedController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
+        $collegesForAssociate = [];
+        $sectorsForAssistant = [];
+
         $currentQuarterYear = Quarter::find(1);
         $quarter = $currentQuarterYear->current_quarter;
         $year = $currentQuarterYear->current_year;
@@ -61,11 +64,11 @@ class SectorConsolidatedController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
         if(in_array(12, $roles)){
-            $colleges = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+            $collegesForAssociate = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
                             ->join('colleges', 'colleges.id', 'associates.college_id')->get();
         }
         if(in_array(13, $roles)){
-            $sectors = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+            $sectorsForAssistant = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
                         ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
         }
 
@@ -112,7 +115,7 @@ class SectorConsolidatedController extends Controller
 
         return view(
                     'reports.consolidate.sector',
-                    compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
+                    compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year', 'collegesForAssociate', 'sectorsForAssistant')
                 );
     }
 
@@ -132,6 +135,12 @@ class SectorConsolidatedController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
+        $collegesForAssociate = [];
+        $sectorsForAssistant = [];
+
+        $currentQuarterYear = Quarter::find(1);
+        $quarter = $currentQuarterYear->current_quarter;
+        $year = $currentQuarterYear->current_year;
 
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
@@ -155,6 +164,14 @@ class SectorConsolidatedController extends Controller
                                         ->select('faculty_extensionists.college_id', 'colleges.code')
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
+        if(in_array(12, $roles)){
+            $collegesForAssociate = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+                            ->join('colleges', 'colleges.id', 'associates.college_id')->get();
+        }
+        if(in_array(13, $roles)){
+            $sectorsForAssistant = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+                        ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
+        }
 
         $sector_accomps =
             Report::select(
@@ -169,7 +186,9 @@ class SectorConsolidatedController extends Controller
                 ->join('users', 'users.id', 'reports.user_id')
                 ->where('reports.report_year', $year)
                 ->where('reports.report_quarter', $quarter)
-                ->where('reports.sector_id', $sector)->get();
+                ->where('reports.sector_id', $sector)
+                ->orderBy('reports.updated_at', 'DESC')
+                ->get();
 
         //get_department_and_college_name
         $college_names = [];
@@ -195,11 +214,9 @@ class SectorConsolidatedController extends Controller
         //SectorDetails
         $sector = Sector::find($sector);
 
-        $collegesOfSector = College::where('sector_id', $sector)->get();
-
         return view(
                     'reports.consolidate.sector',
-                    compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'collegesOfSector', 'departmentsResearch','departmentsExtension', 'quarter', 'year')
+                    compact('roles', 'departments', 'colleges', 'sector_accomps', 'sector', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'quarter', 'year', 'collegesForAssociate', 'sectorsForAssistant')
                 );
     }
 }
