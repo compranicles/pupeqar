@@ -33,10 +33,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-8" style="padding-top: 30px;">
+                            <div class="col-md-8" style="padding-top: 25px;">
                                 <div class="form-group">
-                                    <button id="quarterYearFilter" class="btn btn-primary mr-2">GENERATE</button>
-                                    <button id="export" type="button" class="btn btn-primary" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
+                                    <button id="quarterYearFilter" class="btn btn-primary mr-2"><i class="bi bi-list-ol"></i> Generate Table</button>
+                                    <button id="export" type="button" class="btn btn-warning" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-filetype-xlsx"></i> Export QAR File</button>
                                 </div>
                             </div>
                         </div>

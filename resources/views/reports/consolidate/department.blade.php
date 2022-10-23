@@ -31,7 +31,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-8" style="padding-top: 30px;">
+                    <div class="col-md-8" style="padding-top: 25px;">
                         <div class="form-group">
                             <form action="{{ route('report.generate.index', $user->id)}}" method="POST" id="export_level_form">
                                 @csrf
@@ -40,9 +40,9 @@
                                 <input type="hidden" id="dw_quarter" name="dw_quarter" value="">
                                 <input type="hidden" id="dw_year" name="dw_year" value="">
                                 <input type="hidden" id="department_id" name="department_id" value="{{ $department['id'] }}">
-                                <button id="filter" type="button" class="btn btn-primary mr-2">GENERATE</button>
-                                <button id="export" type="button" class="btn btn-primary mr-2" data-target="#GenerateReport" data-toggle="modal">EXPORT</button>
-                                <button id="exportLevel" type="button" class="btn btn-primary">EXPORT (QAR FILLED IN BY CHAIRPERSON)</button>
+                                <button id="filter" type="button" class="btn btn-primary mr-2"><i class="bi bi-list-ol"></i> Generate Table</button>
+                                <button id="export" type="button" class="btn btn-warning mr-2" data-target="#GenerateReport" data-toggle="modal"><i class="bi bi-filetype-xlsx"></i> Export Dept./Section QAR File</button>
+                                <button id="exportLevel" type="button" class="btn btn-warning"><i class="bi bi-filetype-xlsx"></i> Export QAR Filled-in by Chair/Chief</button>
                             </form>
                         </div>
                     </div>

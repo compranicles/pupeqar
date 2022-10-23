@@ -35,6 +35,8 @@ class IpqmsoConsolidatedController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
+        $collegesForAssociate = [];
+        $sectorsForAssistant = [];
 
         $currentQuarterYear = Quarter::find(1);
         $quarter = $currentQuarterYear->current_quarter;
@@ -63,11 +65,11 @@ class IpqmsoConsolidatedController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
         if(in_array(12, $roles)){
-            $colleges = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+            $collegesForAssociate = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
                             ->join('colleges', 'colleges.id', 'associates.college_id')->get();
         }
         if(in_array(13, $roles)){
-            $sectors = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+            $sectorsForAssistant = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
                         ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
         }
 
@@ -109,7 +111,7 @@ class IpqmsoConsolidatedController extends Controller
 
         return view(
                     'reports.consolidate.ipqmso',
-                    compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter', 'sector_names')
+                    compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter', 'sector_names', 'collegesForAssociate', 'sectorsForAssistant')
                 );
     }
 
@@ -129,6 +131,8 @@ class IpqmsoConsolidatedController extends Controller
             $sectors = [];
             $departmentsResearch = [];
             $departmentsExtension = [];
+            $collegesForAssociate = [];
+            $sectorsForAssistant = [];
 
             if(in_array(5, $roles)){
                 $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
@@ -151,6 +155,14 @@ class IpqmsoConsolidatedController extends Controller
                 $departmentsExtension = FacultyExtensionist::where('faculty_extensionists.user_id', auth()->id())
                                             ->select('faculty_extensionists.college_id', 'colleges.code')
                                             ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
+            }
+            if(in_array(12, $roles)){
+                $collegesForAssociate = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+                                ->join('colleges', 'colleges.id', 'associates.college_id')->get();
+            }
+            if(in_array(13, $roles)){
+                $sectorsForAssistant = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+                            ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
             }
 
             $ipqmso_accomps =
@@ -187,12 +199,11 @@ class IpqmsoConsolidatedController extends Controller
             }
 
         }
-        $colleges = College::all();
         $sector_names = Sector::all();
 
         return view(
             'reports.consolidate.ipqmso',
-            compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter', 'sector_names')
+            compact('roles', 'departments', 'colleges', 'ipqmso_accomps', 'department_names', 'college_names', 'sectors', 'departmentsResearch','departmentsExtension', 'year', 'quarter', 'sector_names', 'collegesForAssociate', 'sectorsForAssistant')
         );
     }
 }

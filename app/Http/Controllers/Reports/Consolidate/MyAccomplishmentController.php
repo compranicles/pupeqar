@@ -41,6 +41,8 @@ class MyAccomplishmentController extends Controller
         $sectors = [];
         $departmentsResearch = [];
         $departmentsExtension = [];
+        $collegesForAssociate = [];
+        $sectorsForAssistant = [];
 
         if(in_array(5, $roles)){
             $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
@@ -65,11 +67,11 @@ class MyAccomplishmentController extends Controller
                                         ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
         }
         if(in_array(12, $roles)){
-            $colleges = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+            $collegesForAssociate = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
                             ->join('colleges', 'colleges.id', 'associates.college_id')->get();
         }
         if(in_array(13, $roles)){
-            $sectors = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+            $sectorsForAssistant = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
                         ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
         }
 
@@ -120,7 +122,8 @@ class MyAccomplishmentController extends Controller
                 'sectors', 'departmentsResearch','departmentsExtension',
                 'year', 'quarter', 'report_categories',
                 'user',
-                'collegeList'
+                'collegeList',
+                'collegesForAssociate', 'sectorsForAssistant'
             ));
 
     }
@@ -144,13 +147,15 @@ class MyAccomplishmentController extends Controller
             $sectors = [];
             $departmentsResearch = [];
             $departmentsExtension = [];
+            $collegesForAssociate = [];
+            $sectorsForAssistant = [];
 
             if(in_array(5, $roles)){
-                $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.name', 'departments.code')
+                $departments = Chairperson::where('chairpeople.user_id', auth()->id())->select('chairpeople.department_id', 'departments.code')
                                             ->join('departments', 'departments.id', 'chairpeople.department_id')->get();
             }
             if(in_array(6, $roles)){
-                $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.name', 'colleges.code')
+                $colleges = Dean::where('deans.user_id', auth()->id())->select('deans.college_id', 'colleges.code')
                                 ->join('colleges', 'colleges.id', 'deans.college_id')->get();
             }
             if(in_array(7, $roles)){
@@ -167,16 +172,27 @@ class MyAccomplishmentController extends Controller
                                             ->select('faculty_extensionists.college_id', 'colleges.code')
                                             ->join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->get();
             }
+            if(in_array(12, $roles)){
+                $collegesForAssociate = Associate::where('associates.user_id', auth()->id())->select('associates.college_id', 'colleges.code')
+                                ->join('colleges', 'colleges.id', 'associates.college_id')->get();
+            }
+            if(in_array(13, $roles)){
+                $sectorsForAssistant = Associate::where('associates.user_id', auth()->id())->select('associates.sector_id', 'sectors.code')
+                            ->join('sectors', 'sectors.id', 'associates.sector_id')->get();
+            }
 
+            $report_categories = ReportCategory::all();
             $my_accomplishments =
-            Report::select(
-                            'reports.*',
-                            'report_categories.name as report_category',
+                Report::select(
+                                'reports.*',
+                                'report_categories.name as report_category',
                             )
-                ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
-                ->where('reports.report_year', $year)
-                ->where('reports.report_quarter', $quarter)
-                ->where('reports.user_id', auth()->id())->get(); //get my individual accomplishment
+                    ->join('report_categories', 'reports.report_category_id', 'report_categories.id')
+                    ->where('reports.report_year', $year)
+                    ->where('reports.report_quarter', $quarter)
+                    ->where('reports.user_id', auth()->id())
+                    ->orderBy('reports.updated_at', 'DESC')
+                    ->get(); //get my individual accomplishment
 
             //get_department_and_college_name
             $college_names = [];
@@ -186,6 +202,7 @@ class MyAccomplishmentController extends Controller
                 $temp_department_name = Department::select('name')->where('id', $row->department_id)->first();
 
                 $row->report_details = json_decode($row->report_details, false);
+
                 if($temp_college_name == null)
                     $college_names[$row->id] = '-';
                 else
@@ -194,13 +211,25 @@ class MyAccomplishmentController extends Controller
                     $department_names[$row->id] = '-';
                 else
                 $department_names[$row->id] = $temp_department_name->name;
-
-
-                }
             }
 
-        //Get distinct colleges from the colleges that had been reported with repeatedly
-        $collegeList = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
-        return view('reports.consolidate.myaccomplishments', compact('roles', 'colleges', 'departments', 'my_accomplishments', 'college_names', 'department_names', 'sectors', 'departmentsResearch','departmentsExtension', 'user', 'collegeList', 'year', 'quarter', 'report_categories'));
+            //Get distinct colleges from the colleges that had been reported with repeatedly
+            $collegeList = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->distinct()->get();
+
+            return view(
+                'reports.consolidate.myaccomplishments',
+                compact(
+                    'roles',
+                    'colleges',
+                    'departments',
+                    'my_accomplishments',
+                    'college_names',
+                    'department_names',
+                    'sectors', 'departmentsResearch','departmentsExtension',
+                    'year', 'quarter', 'report_categories',
+                    'user',
+                    'collegeList', 'collegesForAssociate', 'sectorsForAssistant'
+                ));
+        }
     }
 }
