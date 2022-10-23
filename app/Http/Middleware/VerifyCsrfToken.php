@@ -20,10 +20,11 @@ class VerifyCsrfToken extends Middleware
     public function handle($request, Closure $next)
     {
         if(!Auth::check() && $request->route()->named('logout')) {
-        
             $this->except[] = route('logout');
-            
         }
+
+        if (!Auth::check() && $request->route()->named('register.verify'))
+            $this->except[] = route('register.verify');
         
         return parent::handle($request, $next);
     }
