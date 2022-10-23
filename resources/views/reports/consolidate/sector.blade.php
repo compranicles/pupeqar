@@ -44,10 +44,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6" style="padding-top: 30px;">
+                    <div class="col-md-6" style="padding-top: 25px;">
                         <div class="form-group">
-                            <button id="filter" class="btn btn-primary mr-2">GENERATE</button>
-                            <button id="export" type="button" class="btn btn-primary" data-target="#generateSectorLevel" data-toggle="modal">EXPORT</button>
+                            <button id="filter" class="btn btn-primary mr-2"><i class="bi bi-list-ol"></i> Generate Table</button>
+                            <button id="export" type="button" class="btn btn-warning" data-target="#generateSectorLevel" data-toggle="modal"><i class="bi bi-filetype-xlsx"></i> Export QAR File</button>
                         </div>
                     </div>
                 </div>

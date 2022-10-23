@@ -42,7 +42,7 @@
                     @if (in_array(5, $roles))
                     {{-- Departments' --}}
                         @forelse ( $departments as $row)
-                            <a href="{{ route('reports.consolidate.department', $row->department_id) }}" class="submission-menu  {{ isset($id) ? ($row->department_id == $id &&  request()->routeIs('reports.consolidate.department') ? 'active' : '') : '' }}">  
+                            <a href="{{ route('reports.consolidate.department', $row->department_id) }}" class="submission-menu  {{ isset($id) ? ($row->department_id == $id && (request()->routeIs('reports.consolidate.department') || request()->routeIs('reports.consolidate.department.*')) ? 'active' : '') : '' }}">  
                                 Chair/Chief - {{ $row->code }}
                             </a><br>
                         @empty
@@ -54,7 +54,7 @@
                     @if (in_array(10, $roles))
                         @forelse ( $departmentsResearch as $row)
                             <a href="{{ route('reports.consolidate.research', $row->cluster_id) }}" class="submission-menu {{ isset($id) ? ($row->cluster_id == $id && request()->routeIs('reports.consolidate.research') ? 'active' : '') : '' }}">
-                            Research & Invention - {{ $row->name }}
+                            Research - {{ $row->name }}
                             </a><br>
                         @empty
                         @endforelse
@@ -63,7 +63,7 @@
                     {{-- Extensionist --}}
                     @if (in_array(11, $roles))
                         @forelse ( $departmentsExtension as $row)
-                            <a href="{{ route('reports.consolidate.extension', $row->college_id) }}" class="submission-menu {{ isset($id) ? ($row->college_id == $id && request()->routeIs('reports.consolidate.extension') ? 'active' : '') : '' }}">
+                            <a href="{{ route('reports.consolidate.extension', $row->college_id) }}" class="submission-menu {{ isset($id) ? ($row->college_id == $id && (request()->routeIs('reports.consolidate.extension') || request()->routeIs('reports.consolidate.extension.*')) ? 'active' : '') : '' }}">
                                 Extensionist - {{ $row->code }}
                             </a><br>
                         @empty
@@ -73,7 +73,7 @@
                     {{-- Colleges/Branches/Offices --}}
                     @if (in_array(6, $roles) || in_array(12, $roles))
                         @forelse ( $colleges as $row)
-                            <a href="{{ route('reports.consolidate.college', $row->college_id) }}" class="submission-menu  {{ isset($id) ? ($row->college_id == $id && request()->routeIs('reports.consolidate.college') ? 'active' : '') : '' }} ">
+                            <a href="{{ route('reports.consolidate.college', $row->college_id) }}" class="submission-menu  {{ isset($id) ? ($row->college_id == $id && (request()->routeIs('reports.consolidate.college') || request()->routeIs('reports.consolidate.college.*')) ? 'active' : '') : '' }} ">
                                 Dean/Director - {{ $row->code }}
                             </a><br>
                         @empty
@@ -83,7 +83,7 @@
                     {{-- Sectors/VPs --}}
                     @if (in_array(7, $roles) || in_array(13, $roles))
                         @forelse ( $sectors as $row)
-                            <a href="{{ route('reports.consolidate.sector', $row->sector_id) }}" class="submission-menu {{ isset($sector->id) ? ($row->sector_id == $sector->id && request()->routeIs('reports.consolidate.sector') ? 'active' : '') : '' }}">
+                            <a href="{{ route('reports.consolidate.sector', $row->sector_id) }}" class="submission-menu {{ isset($sector->id) ? ($row->sector_id == $sector->id && (request()->routeIs('reports.consolidate.sector') || request()->routeIs('reports.consolidate.sector.*')) ? 'active' : '') : '' }}">
                                 VP - {{ $row->code }}
                             </a><br>
                         @empty
@@ -92,7 +92,7 @@
     
                     {{-- IPQMSOs --}}
                     @if (in_array(8, $roles))
-                        <a href="{{ route('reports.consolidate.ipqmso') }}" class="submission-menu {{ request()->routeIs('reports.consolidate.ipqmso') || request()->routeIs('reports.consolidate.ipqmso.*') ? 'active' : ''}}">
+                        <a href="{{ route('reports.consolidate.ipqmso') }}" class="submission-menu {{ request()->routeIs('reports.consolidate.ipqmso') || request()->routeIs('reports.consolidate.ipo.*') ? 'active' : ''}}">
                             IPO Level
                         </a>  
                     @endif
