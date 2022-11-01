@@ -2,48 +2,29 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                {{-- Success Message --}}
-                                @if ($message = Session::get('success'))
-                                <div class="alert alert-success alert-index">
-                                    <i class="bi bi-check-circle"></i> {{ $message }}
-                                </div>
-                                @endif
-                                @if ($message = Session::get('cannot_access'))
-                                    <div class="alert alert-danger alert-index">
-                                        {{ $message }}
-                                    </div>
-                                @endif
-                            </div>
-                            
-                            <div class="col-md-12">
-                                <div class="d-flex mr-2">
-                                    <p>
-                                        <a class="back_link" href="{{ route('research.utilization.index', $research->id) }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Utilization</a>
-                                    </p>
-                                    @if ($research->id == $firstResearch['id'])
-                                    <p class="ml-auto">
-                                        <a href="{{ route('research.utilization.edit', [$research->id, $values['id']]) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                    </p>
-                                    <p>
-                                        <button type="button" class="action-delete action_buttons_show" data-toggle="modal" data-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                                    </p>
-                                    @endif
-                                </div>
-                            </div>
+                @section('title', 'Research/Book Chapter Utilizations |')
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="font-weight-bold mr-2">Utilization {{ $values['title'] == null ? '' : 'of '.$values['title'] }}</h3>
+                        <div class="mb-3">
+                            <a class="back_link" href="{{ route('research.utilization.index', $research['id']) }}"><i class="bi bi-chevron-double-left"></i>Return to Utilizations Main Page</a>
                         </div>
-                        @include('show', ['formFields' => $researchFields, 'value' => $values,])
                     </div>
                 </div>
+
+                {{-- Success Message --}}
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @endif
+                @if ($message = Session::get('cannot_access'))
+                    <div class="alert alert-danger alert-index">
+                        {{ $message }}
+                    </div>
+                @endif
+                
+                @include('show', ['formFields' => $researchFields, 'value' => $values,])
             </div>
         </div>
         <div class="row mt-3">

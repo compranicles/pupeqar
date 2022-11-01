@@ -243,7 +243,7 @@
               sortField: "text",
               valueField: 'value',
               labelField: 'text',
-              options: @json($colleges),
+              options: @json($researchClusters),
               items: @json($researcher),
           });
           $("#collegeAssociate").selectize({

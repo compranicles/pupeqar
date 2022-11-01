@@ -69,28 +69,28 @@
                                                 <th>#</th>
                                                 <th>Research Code</th>
                                                 <th>Research Title</th>
+                                                <th>Researchers</th>
                                                 <th>Status</th>
                                                 <th>College/Branch/ Campus/Office</th>
-                                                <th>Date Modified</th>
-                                                <th>Quarter</th>
-                                                <th>Year</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($researches as $research)
                                                 <tr role="button">
                                                     <td><a href="{{ route('research.show', $research->id) }}" class="link text-dark">{{ $loop->iteration }}</a></td>
-                                                    <td>{{ $research->research_code }}</td>
-                                                    <td>{{ $research->title }}</td>
-                                                    <td>{{ $research->status_name }}</td>
-                                                    <td>{{ $research->college_name }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' " >{{ $research->research_code }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' " >{{ $research->title }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' " >{{ $research->researchers }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' " >{{ $research->status_name }}</td>
+                                                    <td onclick="window.location.href = '{{ route('research.show', $research->id) }}' " >{{ $research->college_name }}</td>
                                                     <td>
-                                                        <?php $updated_at = strtotime( $research->updated_at );
-                                                            $updated_at = date( 'M d, Y h:i A', $updated_at ); ?>
-                                                        {{ $updated_at }}
+                                                        <div class="btn-group" role="group" aria-label="button-group">
+                                                            <a class="btn btn-sm btn-primary d-inline-flex align-items-center" href="{{ route('research.show', $research->id) }}">View</a>
+                                                            <a class="btn btn-sm btn-warning d-inline-flex align-items-center" href="{{ route('research.edit', $research->id) }}">Edit</a>
+                                                            @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code, 'firstResearch' => $firstResearch[$research->id]])
+                                                        </div>
                                                     </td>
-                                                    <td class="{{ ($research->report_quarter == $currentQuarterYear->current_quarter && $research->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">{{ $research->report_quarter }}</td>
-                                                    <td>{{ $research->report_year }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -119,11 +119,6 @@
                 $(this).remove();
             });
         }, 4000);
-    </script>
-    <script>
-         $('#researchTable').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(0) a').attr('href');
-            });
     </script>
     <script>
         var max = new Date().getFullYear();

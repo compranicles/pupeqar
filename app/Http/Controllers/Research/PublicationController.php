@@ -6,7 +6,6 @@ use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
-    Reports\ReportDataController,
     StorageFileController,
 };
 use Illuminate\Http\Request;
@@ -16,20 +15,13 @@ use Illuminate\Support\Facades\{
 };
 use App\Models\{
     Research,
-    ResearchCitation,
-    ResearchComplete,
-    ResearchCopyright,
     ResearchDocument,
     ResearchPresentation,
     ResearchPublication,
-    ResearchUtilization,
     TemporaryFile,
-    FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     FormBuilder\DropdownOption,
     Maintenance\Quarter,
-    Maintenance\Department,
-    Maintenance\College,
 };
 use App\Services\CommonService;
 use Exception;
@@ -38,10 +30,12 @@ class PublicationController extends Controller
 {
     protected $storageFileController;
     private $commonService;
+    protected $researchController;
 
-    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService, ResearchController $researchController){
         $this->storageFileController = $storageFileController;
         $this->commonService = $commonService;
+        $this->researchController = $researchController;
     }
 
     /**
@@ -53,69 +47,34 @@ class PublicationController extends Controller
     {
         $this->authorize('viewAny', ResearchPublication::class);
 
-        $researchFields = DB::select("CALL get_research_fields_by_form_id('3')");
+        $publicationFields = DB::select("CALL get_research_fields_by_form_id('3')");
 
-        $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 3)->get()->toArray();
+        $publicationDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 3)->get()->toArray();
 
-        $values = ResearchPublication::where('research_code', $research->research_code)->first();
-        if($values == null){
-            return redirect()->route('research.show', $research->research_code);
-        }
+        $publicationRecord = ResearchPublication::where('research_code', $research->research_code)->first();
 
-        $values = collect($values->toArray());
-        $values = $values->except(['research_code']);
-        $values = $values->toArray();
-
-        $value = $research;
-        $value->toArray();
-        $value = collect($research);
-        $value = $value->except(['description']);
-        $value = $value->toArray();
-
-        $value = array_merge($value, $values);
-
-        $submissionStatus = array();
-        $submitRole = array();
-        $reportdata = new ReportDataController;
-            if (LockController::isLocked($values['id'], 3)) {
-                $submissionStatus[3][$values['id']] = 1;
-                $submitRole[$values['id']] = ReportDataController::getSubmitRole($values['id'], 3);
-            }
-            else
-                $submissionStatus[3][$values['id']] = 0;
-            if (empty($reportdata->getDocuments(3, $values['id'])))
-                $submissionStatus[3][$values['id']] = 2;
-        
-        foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->where('is_active', 1)->pluck('name')->first();
-                if($dropdownOptions == null)
-                    $dropdownOptions = "-";
-                $value[$field->name] = $dropdownOptions;
-            }
-            elseif($field->field_type_name == "college"){
-                if($value[$field->name] == '0'){
-                    $value[$field->name] = 'N/A';
-                }
-                else{
-                    $college = College::where('id', $value[$field->name])->pluck('name')->first();
-                    $value[$field->name] = $college;
-                }
-            }
-            elseif($field->field_type_name == "department"){
-                if($value[$field->name] == '0'){
-                    $value[$field->name] = 'N/A';
-                }
-                else{
-                    $department = Department::where('id', $value[$field->name])->pluck('name')->first();
-                    $value[$field->name] = $department;
-                }
+        if($publicationRecord == null){
+            if ($research->status >= 28)
+                return redirect()->route('research.publication.create', $research->id);
+            else {
+                $value = null;
+                return view('research.publication.index', compact('research', 'value'));
             }
         }
         $firstResearch = Research::where('research_code', $research->research_code)->first();
 
-        return view('research.publication.index', compact('research', 'researchFields',
-            'value', 'researchDocuments', 'submissionStatus', 'submitRole', 'firstResearch'));
+        $publicationValues = array_merge(collect($publicationRecord)->except(['research_code'])->toArray(), collect($research)->except(['description'])->toArray());
+
+        $submissionStatus[3][$publicationValues['id']] = $this->commonService->getSubmissionStatus($publicationValues['id'], 3)['submissionStatus'];
+        $submitRole[$publicationValues['id']] = $this->commonService->getSubmissionStatus($publicationValues['id'], 3)['submitRole'];
+
+        $value = $this->commonService->getDropdownValues($publicationFields, $publicationValues);
+        $noRequisiteRecords[1] = $this->researchController->getNoRequisites($research)['presentationRecord'];
+        $noRequisiteRecords[2] = $this->researchController->getNoRequisites($research)['publicationRecord'];
+        $noRequisiteRecords[3] = $this->researchController->getNoRequisites($research)['copyrightRecord'];
+
+        return view('research.publication.index', compact('research', 'publicationFields',
+            'value', 'publicationDocuments', 'submissionStatus', 'submitRole', 'noRequisiteRecords'));
     }
 
     /**
@@ -203,35 +162,7 @@ class PublicationController extends Controller
         ]);
 
         $publication = ResearchPublication::create($input);
-
-        // if($request->has('document')){
-        //     try {
-        //         $documents = $request->input('document');
-        //         foreach($documents as $document){
-        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
-        //             if($temporaryFile){
-        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-        //                 $ext = $info['extension'];
-        //                 $fileName = 'RPUB-'.$request->input('research_code').'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-        //                 $newPath = "documents/".$fileName;
-        //                 Storage::move($temporaryPath, $newPath);
-        //                 Storage::deleteDirectory("documents/tmp/".$document);
-        //                 $temporaryFile->delete();
-        //                 ResearchDocument::create([
-        //                     'research_code' => $request->input('research_code'),
-        //                     'research_id' => $research->id,
-        //                     'research_form_id' => 3,
-        //                     'filename' => $fileName,
-        //                 ]);
-        //             }
-        //         }
-        //     } catch (Exception $th) {
-        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        //     }
-        // }
-
-        LogActivity::addToLog('Had marked the research "'.$research->title.'" as presented.');
+        
         if(!empty($request->file(['document']))){      
             foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RPUB-", 'research.publication.index');
@@ -245,7 +176,10 @@ class PublicationController extends Controller
                 } else return $fileName;
             }
         }
-        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been added.');
+
+        \LogActivity::addToLog('Had marked the research "'.$research->title.'" as presented.');
+
+        return redirect()->route('research.index')->with('success', 'Research publication has been added.');
     }
 
     /**
@@ -310,7 +244,11 @@ class PublicationController extends Controller
             $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', 31)->first();
         }
 
-        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options', 'currentQuarter'));
+        $noRequisiteRecords[1] = $this->researchController->getNoRequisites($research)['presentationRecord'];
+        $noRequisiteRecords[2] = $this->researchController->getNoRequisites($research)['publicationRecord'];
+        $noRequisiteRecords[3] = $this->researchController->getNoRequisites($research)['copyrightRecord'];
+
+        return view('research.publication.edit', compact('research', 'researchFields', 'researchDocuments', 'value', 'researchStatus', 'dropdown_options', 'currentQuarter', 'noRequisiteRecords'));
     }
 
     /**
@@ -344,8 +282,6 @@ class PublicationController extends Controller
 
         $publication->update($input);
 
-        LogActivity::addToLog('Had updated the publication details of research "'.$research->title.'".');
-
         if(!empty($request->file(['document']))){      
             foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RPUB-", 'research.publication.index');
@@ -359,7 +295,10 @@ class PublicationController extends Controller
                 } else return $fileName;
             }
         }
-        return redirect()->route('research.publication.index', $research->id)->with('success', 'Research publication has been updated.');
+
+        \LogActivity::addToLog('Had updated the publication details of research "'.$research->title.'".');
+
+        return redirect()->route('research.index')->with('success', 'Research publication has been updated.');
     }
 
     /**

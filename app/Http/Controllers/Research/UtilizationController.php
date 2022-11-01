@@ -6,7 +6,7 @@ use App\Helpers\LogActivity;
 use App\Http\Controllers\{
     Controller,
     Maintenances\LockController,
-    Reports\ReportDataController,
+    StorageFileController,
 };
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\{
@@ -15,16 +15,10 @@ use Illuminate\Support\Facades\{
 };
 use App\Models\{
     Research,
-    ResearchCitation,
-    ResearchComplete,
-    ResearchCopyright,
     ResearchDocument,
-    ResearchPresentation,
-    ResearchPublication,
     ResearchUtilization,
     TemporaryFile,
     FormBuilder\DropdownOption,
-    FormBuilder\ResearchField,
     FormBuilder\ResearchForm,
     Maintenance\Quarter,
     Maintenance\Department,
@@ -35,12 +29,13 @@ use Exception;
 
 class UtilizationController extends Controller
 {
+    protected $storageFileController;
     private $commonService;
 
-    public function __construct(CommonService $commonService){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService){
+        $this->storageFileController = $storageFileController;
         $this->commonService = $commonService;
     }
-    
     /**
      * Display a listing of the resource.
      *
@@ -52,7 +47,7 @@ class UtilizationController extends Controller
 
         $currentQuarterYear = Quarter::find(1);
 
-        $researchutilizations = ResearchUtilization::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
+        $utilizationRecords = ResearchUtilization::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
 
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
@@ -60,21 +55,13 @@ class UtilizationController extends Controller
 
         $submissionStatus = array();
         $submitRole = array();
-        $reportdata = new ReportDataController;
-        foreach ($researchutilizations as $utilization) {
-            if (LockController::isLocked($utilization->id, 6)) {
-                $submissionStatus[6][$utilization->id] = 1;
-                $submitRole[$utilization->id] = ReportDataController::getSubmitRole($utilization->id, 6);
-            }
-            else
-                $submissionStatus[6][$utilization->id] = 0;
-            if (empty($reportdata->getDocuments(6, $utilization->id)))
-                $submissionStatus[6][$utilization->id] = 2;
+        foreach ($utilizationRecords as $utilization) {
+            $submissionStatus[6][$utilization->id] = $this->commonService->getSubmissionStatus($utilization->id, 6)['submissionStatus'];
+            $submitRole[$utilization->id] = $this->commonService->getSubmissionStatus($utilization->id, 6)['submitRole'];
         }
-        $firstResearch = Research::where('research_code', $research->research_code)->first();
 
-        return view('research.utilization.index', compact('research', 'researchutilizations',
-            'currentQuarterYear', 'submissionStatus', 'submitRole', 'firstResearch'));
+        return view('research.utilization.index', compact('research', 'utilizationRecords',
+            'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 
     /**
@@ -127,39 +114,6 @@ class UtilizationController extends Controller
         $string = str_replace(' ', '-', $request->input('description')); // Replaces all spaces with hyphens.
         $description =  preg_replace('/[^A-Za-z0-9\-]/', '', $string); // Removes special chars.
 
-        // if($request->has('document')){
-        //     try {
-        //         $documents = $request->input('document');
-        //         foreach($documents as $document){
-        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
-        //             if($temporaryFile){
-        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-        //                 $ext = $info['extension'];
-        //                 $fileName = 'RU-'.$request->input('research_code').'-'.$description.'-'.now()->timestamp.uniqid().'.'.$ext;
-        //                 $newPath = "documents/".$fileName;
-        //                 Storage::move($temporaryPath, $newPath);
-        //                 Storage::deleteDirectory("documents/tmp/".$document);
-        //                 $temporaryFile->delete();
-
-        //                 ResearchDocument::create([
-        //                     'research_code' => $request->input('research_code'),
-        //                     'research_id' => $research->id,
-        //                     'research_form_id' => 6,
-        //                     'research_utilization_id' => $utilization->id,
-        //                     'filename' => $fileName,
-        //                 ]);
-        //             }
-        //         }
-        //     }  catch (Exception $th) {
-        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        //     }
-    
-            
-        // }
-
-        LogActivity::addToLog('Had added a research utilization for "'.$research->title.'".');
-
         if(!empty($request->file(['document']))){      
             foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RCR-", 'research.utilization.index');
@@ -174,7 +128,10 @@ class UtilizationController extends Controller
                 } else return $fileName;
             }
         }
-        return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been added.');
+
+        \LogActivity::addToLog('Had added a research utilization for "'.$research->title.'".');
+
+        return redirect()->route('research.index')->with('success', 'Research utilization has been added.');
     }
 
     /**
@@ -380,5 +337,34 @@ class UtilizationController extends Controller
         LogActivity::addToLog('Had deleted a research utilization of "'.$research->title.'".');
 
         return redirect()->route('research.utilization.index', $research->id)->with('success', 'Research utilization has been deleted.');
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showAll($researchId)
+    {
+        $this->authorize('viewAny', ResearchUtilization::class);;
+
+        $currentQuarterYear = Quarter::find(1);
+        $research = Research::find($researchId);
+
+        $utilizationRecords = ResearchUtilization::where('research_code', $research->research_code)->orderBy('updated_at', 'desc')->get();
+
+        $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
+                ->join('dropdown_options', 'dropdown_options.id', 'research.status')
+                ->select('research.*', 'dropdown_options.name as status_name')->first();
+
+        $submissionStatus = array();
+        $submitRole = array();
+        foreach ($utilizationRecords as $utilization) {
+            $submissionStatus[6][$utilization->id] = $this->commonService->getSubmissionStatus($utilization->id, 6)['submissionStatus'];
+            $submitRole[$utilization->id] = $this->commonService->getSubmissionStatus($utilization->id, 6)['submitRole'];
+        }
+
+        return view('research.utilization.show-all', compact('research', 'utilizationRecords',
+            'currentQuarterYear', 'submissionStatus', 'submitRole'));
     }
 }

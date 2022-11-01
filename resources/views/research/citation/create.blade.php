@@ -2,12 +2,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research['id'], 'research_status' => $research['status']])
-            </div>
-        </div>
-        <h4>Research Citations - {{ $research['title'] }}</h4>
-        <div class="row">
-            <div class="col-md-12">
+                @section('title', 'Research/Book Chapter Utilizations |')
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="font-weight-bold mr-2">Add Research/Book Chapter Citations</h3>
+                        <div class="mb-3">
+                            <a class="back_link" href="{{ route('research.citation.index', $research['id']) }}"><i class="bi bi-chevron-double-left"></i>Return to Citation Main Page</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('research.citation.store', $research['id']) }}" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>

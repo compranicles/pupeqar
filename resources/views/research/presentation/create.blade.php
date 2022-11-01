@@ -2,12 +2,15 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
-
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
+                @section('title', 'Research/Book Chapter Presentation |')
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="font-weight-bold mr-2">Add Research/Book Chapter Presentation</h3>
+                        <div class="mb-3">
+                            <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Return to Research Main Page</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('research.presentation.store', $research->id) }}" enctype="multipart/form-data" method="post" class="needs-validation" novalidate>

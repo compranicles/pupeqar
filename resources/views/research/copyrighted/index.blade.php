@@ -6,6 +6,13 @@
             </div>
         </div>
 
+        @if ($research->status < 28)
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="text-center mt-5">This form is unavailable for a new commitment/ongoing research.</h3>
+                </div>
+            </div>
+        @else
         <div class="row">
             <div class="col-md-12">
                 {{-- Success Message --}}
@@ -19,34 +26,7 @@
                         {{ $message }}
                     </div>
                 @endif
-                @if ($research->id == $firstResearch['id'])
-                <div class="alert alert-info" role="alert-reminder">
-                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm your shared research <strong>before submitting</strong>.
-                </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Research Copyrighted</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <div class="d-flex justify-content-end align-items-baseline">
-                                    @if ($submissionStatus[7][$values['id']] == 0)
-                                        <a href="{{ url('submissions/check/7/'.$values['id']) }}" class="btn btn-sm btn-primary mr-3">Submit Research Copyright</a>
-                                    @elseif ($submissionStatus[7][$values['id']] == 1)
-                                        <a href="{{ url('submissions/check/7/'.$values['id']) }}" class="btn btn-sm btn-success mr-3">Submitted {{ $submitRole[$values['id']] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
-                                    @elseif ($submissionStatus[7][$values['id']] == 2)
-                                        <a href="{{ route('research.copyright', $values['id']) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center mr-3"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                    @endif        
-                                    @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                            @include('show', ['formFields' => $researchFields, 'value' => $values,])
-                    </div>
-                </div>
+                @include('show', ['formFields' => $copyrightFields, 'value' => $values,])
             </div>
         </div>
         <div class="row mt-3">
@@ -62,8 +42,8 @@
                             <div class="col-md-6">
                                 <h6 style="color:maroon"><i class="far fa-file-alt mr-2"></i>Documents</h6>
                                 <div class="row">
-                                    @if (count($researchDocuments) > 0)
-                                        @foreach ($researchDocuments as $document)
+                                    @if (count($copyrightDocuments) > 0)
+                                        @foreach ($copyrightDocuments as $document)
                                             @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-12 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">
@@ -91,8 +71,8 @@
                             <div class="col-md-6">
                                 <h6 style="color:maroon"><i class="far fa-image mr-2"></i>Images</h6>
                                 <div class="row">
-                                    @if(count($researchDocuments) > 0)
-                                        @foreach ($researchDocuments as $document)
+                                    @if(count($copyrightDocuments) > 0)
+                                        @foreach ($copyrightDocuments as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-6 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">
@@ -116,6 +96,7 @@
                 </div>
             </div>
         </div>
+        @endif
     </div>
     {{-- Delete Form Modal --}}
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">

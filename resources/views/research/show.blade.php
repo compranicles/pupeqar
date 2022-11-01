@@ -3,7 +3,7 @@
     <div class="container">
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
+                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status, 'research' => $value])
             </div>
         </div>
 
@@ -20,55 +20,7 @@
                         {{ $message }}
                     </div>
                 @endif
-                @if ($research->id == $firstResearch['id'])
-                    @if ($research->nature_of_involvement != 224 )
-                        <div class="alert alert-info" role="alert">
-                            <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Tag Co-Researchers</strong> button to check if the co-researchers already confirm their involvement <strong>before submitting</strong>.
-                        </div>
-                    @endif
-                    <div class="alert alert-info" role="alert">
-                        <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong>Click <strong>Options</strong> to proceed research completion, presentation, publication, copyright, utilization, citation.
-                    </div>
-                @else
-                <div class="alert alert-info" role="alert">
-                    <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: Wait your lead to submit the research before you submit</strong>.
-                </div>
-                @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <h4>Research Registration - {{ $research->research_code }}</h4>
-                            </div>
-                            <div class="col-md-6 text-right">
-                                <div class="mb-0">
-                                    <div class="d-flex justify-content-end align-items-baseline">
-                                        {{-- @if ($research->nature_of_involvement == 11)
-                                            <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}">Manage Researchers</a>
-                                        @else --}}
-                                            {{-- <a class="btn btn-secondary btn-sm mr-1" href="{{ route('research.manage-researchers', $research->research_code) }}"></a>
-                                        @endif --}}
-                                        <!-- Submit buttons -->
-                                        @if ($submissionStatus[1][$value['id']] == 0)
-                                            <a href="{{ url('submissions/check/1/'.$research->id) }}" class="btn btn-sm btn-primary mr-3">Submit Registered Research</a>
-                                        @elseif ($submissionStatus[1][$value['id']] == 1)
-                                            <a href="{{ url('submissions/check/1/'.$research->id) }}" class="btn btn-sm btn-success mr-3">Registered Research Submitted {{ $submitRole[$research->id] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
-                                        @elseif ($submissionStatus[1][$value['id']] == 2)
-                                            <a href="{{ route('research.edit', $research->id) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center mr-3"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                        @endif 
-
-                                        @if ($research->nature_of_involvement != 224 && $research->id == $firstResearch['id'])
-                                            <a href="{{ route('research.invite.index', $research->id) }}" class="btn btn-primary btn-sm mr-3"><i class="bi bi-person-plus-fill mr-1"></i> Tag Co-Researchers</a>
-                                        @endif
-                                        @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr>
-                        @include('show', ['formFields' => $researchFields, 'value' => $value])
-                    </div>
-                </div>
+                @include('show', ['formFields' => $researchFields, 'value' => $value])
             </div>
         </div>
         <div class="row mt-3">

@@ -43,6 +43,7 @@ use App\Notifications\ResearchInviteNotification;
 use App\Rules\Keyword;
 use App\Services\CommonService;
 use App\Services\DateContentService;
+use App\Services\CommonService;
 use Exception;
 
 class ResearchController extends Controller
@@ -75,6 +76,43 @@ class ResearchController extends Controller
                                 ->select('research.*', 'dropdown_options.name as status_name', 'colleges.name as college_name')
                                 ->orderBy('research.updated_at', 'DESC')
                                 ->get();
+        $submissionStatus = array();                
+        $submitRole = array();                
+        $firstResearch = array();                
+        $completionRecord = array();                
+        $presentationRecord = array();                
+        $publicationRecord = array();                
+        $copyrightRecord = array();                
+        foreach ($researches as $row){
+            $firstResearch[$row->id] = Research::where('research_code', $row->research_code)->first();
+            // Research Registration
+            $submissionStatus[1][$row->id] = $this->commonService->getSubmissionStatus($row->id, 1)['submissionStatus'];
+            $submitRole[$row->id] = $this->commonService->getSubmissionStatus($row->id, 1)['submitRole'];
+            // Research Completion
+            $completionRecord[$row->id] = ResearchComplete::where('research_code', $row->research_code)->first();
+            if ($completionRecord[$row->id] != null) {
+                $submissionStatus[2][$completionRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($completionRecord[$row->id]['id'], 2)['submissionStatus'];
+                $submitRole[$completionRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($completionRecord[$row->id]['id'], 2)['submitRole'];
+            }
+            // Research Publication
+            $publicationRecord[$row->id] = ResearchPublication::where('research_code', $row->research_code)->first();
+            if ($publicationRecord[$row->id] != null) {
+                $submissionStatus[3][$publicationRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($publicationRecord[$row->id]['id'], 3)['submissionStatus'];
+                $submitRole[$publicationRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($publicationRecord[$row->id]['id'], 3)['submitRole'];
+            }
+            // Research Presentation
+            $presentationRecord[$row->id] = ResearchPresentation::where('research_code', $row->research_code)->first();
+            if ($presentationRecord[$row->id] != null) {
+                $submissionStatus[4][$presentationRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($presentationRecord[$row->id]['id'], 4)['submissionStatus'];
+                $submitRole[$presentationRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($presentationRecord[$row->id]['id'], 4)['submitRole'];
+            }
+            // Research Copyright
+            $copyrightRecord[$row->id] = ResearchCopyright::where('research_code', $row->research_code)->first();
+            if ($copyrightRecord[$row->id] != null) {
+                $submissionStatus[7][$copyrightRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($copyrightRecord[$row->id]['id'], 7)['submissionStatus'];
+                $submitRole[$copyrightRecord[$row->id]['id']] = $this->commonService->getSubmissionStatus($copyrightRecord[$row->id]['id'], 7)['submitRole'];
+            }
+        }
 
         $invites = ResearchInvite::join('research', 'research.id', 'research_invites.research_id')
                                 ->join('users', 'users.id', 'research_invites.sender_id')
@@ -88,7 +126,8 @@ class ResearchController extends Controller
                                 ->get();
 
         return view('research.index', compact('researches', 'year', 'statusResearch', 'invites',
-             'currentQuarterYear'));
+             'currentQuarterYear', 'submissionStatus', 'submitRole', 'firstResearch', 'completionRecord',
+            'publicationRecord', 'presentationRecord', 'copyrightRecord'));
     }
 
     /**
@@ -378,15 +417,21 @@ class ResearchController extends Controller
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
 
-        $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
-
-        $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
-
         $firstResearch = Research::where('research_code', $research->research_code)->first();
-        //$values = Research::where('research_code', $research->research_code)->first()->toArray();
+
+        $researchFields = DB::select("CALL get_research_fields_by_form_id('1')");
+
+        $researchValues = $research->toArray();
+
+        $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
+
+        $submissionStatus[1][$research->id] = $this->commonService->getSubmissionStatus($research->id, 1)['submissionStatus'];
+        $submitRole[$research->id] = $this->commonService->getSubmissionStatus($research->id, 1)['submitRole'];
+        
+        $value = $this->commonService->getDropdownValues($researchFields, $researchValues);
 
         if ($research->department_id != null) {
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(".$research->department_id.")");
@@ -395,59 +440,14 @@ class ResearchController extends Controller
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
 
-        $exists = 0;
-        if(Report::where
-        ('report_reference_id', $research->id)->where('report_category_id', 1)->exists()){
-            $exists = 1;
-        }
-
-        $value = $research;
-        $value = $value->toArray();
-
         $colleges = Employee::where('user_id', auth()->id())->join('colleges', 'colleges.id', 'employees.college_id')->select('colleges.*')->get();
 
-        $submissionStatus = array();
-        $submitRole = array();
-        $reportdata = new ReportDataController;
-            if (LockController::isLocked($research->id, 1)) {
-                $submissionStatus[1][$research->id] = 1;
-                $submitRole[$research->id] = ReportDataController::getSubmitRole($research->id, 1);
-            }
-            else
-                $submissionStatus[1][$research->id] = 0;
-            if (empty($reportdata->getDocuments(1, $research->id)))
-                $submissionStatus[1][$research->id] = 2;
-
-        foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('id', $value[$field->name])->where('is_active', 1)->pluck('name')->first();
-                if($dropdownOptions == null)
-                    $dropdownOptions = "-";
-                $value[$field->name] = $dropdownOptions;
-            }
-            elseif($field->field_type_name == "college"){
-                if($value[$field->name] == '0'){
-                    $value[$field->name] = 'N/A';
-                }
-                else{
-                    $college = College::where('id', $value[$field->name])->pluck('name')->first();
-                    $value[$field->name] = $college;
-                }
-            }
-            elseif($field->field_type_name == "department"){
-                if($value[$field->name] == '0'){
-                    $value[$field->name] = 'N/A';
-                }
-                else{
-                    $department = Department::where('id', $value[$field->name])->pluck('name')->first();
-                    $value[$field->name] = $department;
-                }
-            }
-        }
+        $noRequisiteRecords[1] = $this->getNoRequisites($research)['presentationRecord'];
+        $noRequisiteRecords[2] = $this->getNoRequisites($research)['publicationRecord'];
+        $noRequisiteRecords[3] = $this->getNoRequisites($research)['copyrightRecord'];
 
         return view('research.show', compact('research', 'researchFields', 'value', 'researchDocuments',
-             'colleges', 'collegeOfDepartment', 'exists',
-             'submissionStatus', 'submitRole', 'firstResearch'));
+             'colleges', 'collegeOfDepartment', 'submissionStatus', 'submitRole', 'firstResearch', 'noRequisiteRecords'));
     }
 
     /**
@@ -464,9 +464,6 @@ class ResearchController extends Controller
         if (auth()->id() !== $research->user_id)
             abort(403);
 
-        if(LockController::isLocked($research->id, 1)){
-            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already committed this accomplishment. You can edit it again in the next quarter.');
-        }
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
         return view('inactive');
 
@@ -481,14 +478,16 @@ class ResearchController extends Controller
             }
         }
 
-        if($research->nature_of_involvement != 11 || $research->nature_of_involvement != 224){
+        $firstResearch = Research::where('research_code', $research->research_code)->first();
+        
+        if($firstResearch['id'] == $research->id){
+            $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->first()->toArray();
+        }
+        else{
             $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'research.status')
                         ->join('currencies', 'currencies.id', 'research.currency_funding_amount')
                         ->select('research.*', 'dropdown_options.name as status_name', 'currencies.code as currency_funding_amount_code')
                         ->first()->toArray();
-        }
-        else{
-            $values = Research::where('research_code', $research->research_code)->where('user_id', auth()->id())->first()->toArray();
         }
 
         $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 1)->get()->toArray();
@@ -506,13 +505,35 @@ class ResearchController extends Controller
             $collegeOfDepartment = DB::select("CALL get_college_and_department_by_department_id(0)");
         }
 
-        $firstResearch = Research::where('research_code', $research->research_code)->first();
+        $noRequisiteRecords[1] = $this->getNoRequisites($research)['presentationRecord'];
+        $noRequisiteRecords[2] = $this->getNoRequisites($research)['publicationRecord'];
+        $noRequisiteRecords[3] = $this->getNoRequisites($research)['copyrightRecord'];
+
         $researchStatus = DropdownOption::where('dropdown_options.dropdown_id', 7)->where('id', $research->status)->first();
-        if ($research->id == $firstResearch['id'])
-            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
+        if($firstResearch['id'] == $research->id)
+            return view('research.edit', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter', 'noRequisiteRecords'));
 
-        return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter'));
+        return view('research.edit-non-lead', compact('research', 'researchFields', 'values', 'researchDocuments', 'colleges', 'researchStatus', 'collegeOfDepartment', 'departments', 'dropdown_options', 'currentQuarter', 'noRequisiteRecords'));
 
+    }
+
+    /**
+     * A function with parameter research row that gets the first record in each research status that has no requisites based on research code
+     *
+     * @param  Object  $row
+     * @return Object with key-value pairs
+     */
+    public static function getNoRequisites($row){
+        $noRequisiteRecords = array();
+        $noRequisiteRecords[1] = ResearchPublication::where('research_code', $row->research_code)->first();
+        $noRequisiteRecords[2] = ResearchPresentation::where('research_code', $row->research_code)->first();
+        $noRequisiteRecords[3] = ResearchCopyright::where('research_code', $row->research_code)->first();
+
+        return [
+            'publicationRecord' => $noRequisiteRecords[1],
+            'presentationRecord' => $noRequisiteRecords[2],
+            'copyrightRecord' => $noRequisiteRecords[3],
+        ];
     }
 
     /**
@@ -524,6 +545,9 @@ class ResearchController extends Controller
      */
     public function update(Request $request, Research $research)
     {
+        if(LockController::isLocked($research->id, 1)){
+            return redirect()->back()->with('cannot_access', 'Cannot be edited because you already committed this accomplishment. You can edit it again in the next quarter.');
+        }
         $currentQuarterYear = Quarter::find(1);
         if(ResearchForm::where('id', 1)->pluck('is_active')->first() == 0)
             return view('inactive');
@@ -564,40 +588,6 @@ class ResearchController extends Controller
             'funding_amount' => $funding_amount,
         ]);
 
-        // if($request->has('document')){
-        //     try {
-        //         $documents = $request->input('document');
-        //         $count = 1;
-        //         foreach($documents as $document){
-        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
-        //             if($temporaryFile){
-        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-        //                 $ext = $info['extension'];
-        //                 $fileName = 'RR-'.$research->researchCode.'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-        //                 $newPath = "documents/".$fileName;
-        //                 Storage::move($temporaryPath, $newPath);
-        //                 Storage::deleteDirectory("documents/tmp/".$document);
-        //                 $temporaryFile->delete();
-    
-        //                 ResearchDocument::create([
-        //                     'research_id' => $research->id,
-        //                     'research_code' => $research->research_code,
-        //                     'research_form_id' => 1,
-        //                     'filename' => $fileName,
-    
-        //                 ]);
-        //             }
-        //         }
-        //     } catch (Exception $th) {
-        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        //     }
-           
-        // }
-
-        LogActivity::addToLog('Had updated the details of research "'.$research->title.'".');
-
-        
         if(!empty($request->file(['document']))){      
             foreach($request->file(['document']) as $document){
                 $fileName = $this->commonService->fileUploadHandler($document, $request->input("description"), "RR-", 'research.index');
@@ -612,7 +602,10 @@ class ResearchController extends Controller
                 } else return $fileName;
             }
         }
-        return redirect()->route('research.show', $research->id)->with('success', 'Research has been updated.');
+
+        \LogActivity::addToLog('Had updated the details of research "'.$research->title.'".');
+
+        return redirect()->route('research.index')->with('success', 'Research has been updated.');
     }
 
     public function updateNonLead (Request $request, Research $research)
@@ -641,7 +634,7 @@ class ResearchController extends Controller
 
         LogActivity::addToLog('Had updated the details of research "'.$research->title.'".');
 
-        return redirect()->route('research.show', $research)->with('success', 'Research has been updated.');
+        return redirect()->route('research.index')->with('success', 'Research has been updated.');
     }
 
     /**
@@ -906,74 +899,10 @@ class ResearchController extends Controller
                             'filename' => $fileName,
                         ]);
                     }
-                    elseif($report_category_id == 6){
-                        ResearchDocument::create([
-                            'research_code' => $research_code,
-                            'research_form_id' => $report_category_id,
-                            'research_utilization_id' => $utilization_id,
-                            'filename' => $fileName,
-                        ]);
-                    }
-                    else{
-                        ResearchDocument::create([
-                            'research_code' => $research_code,
-                            'research_form_id' => $report_category_id,
-                            'filename' => $fileName,
-
-                        ]);
-                    }
-                } else return $fileName;
+                }
             }
         }
         return redirect()->route('to-finalize.index')->with('success', 'Document added successfully');
-
-                // if($request->has('document')){
-
-        //     try {
-        //         $documents = $request->input('document');
-        //         $count = 1;
-        //         foreach($documents as $document){
-        //             $temporaryFile = TemporaryFile::where('folder', $document)->first();
-        //             if($temporaryFile){
-        //                 $temporaryPath = "documents/tmp/".$document."/".$temporaryFile->filename;
-        //                 $info = pathinfo(storage_path().'/documents/tmp/'.$document."/".$temporaryFile->filename);
-        //                 $ext = $info['extension'];
-        //                 $fileName = 'RR-'.$researchCode.'-'.$this->storageFileController->abbrev($request->input('description')).'-'.now()->timestamp.uniqid().'.'.$ext;
-        //                 $newPath = "documents/".$fileName;
-        //                 Storage::move($temporaryPath, $newPath);
-        //                 Storage::deleteDirectory("documents/tmp/".$document);
-        //                 $temporaryFile->delete();
-
-        //                 if($report_category_id == 5){//citations
-        //                     ResearchDocument::create([
-        //                         'research_code' => $research_code,
-        //                         'research_form_id' => $report_category_id,
-        //                         'research_citation_id' => $citation_id,
-        //                         'filename' => $fileName,
-        //                     ]);
-        //                 }
-        //                 elseif($report_category_id == 6){
-        //                     ResearchDocument::create([
-        //                         'research_code' => $research_code,
-        //                         'research_form_id' => $report_category_id,
-        //                         'research_utilization_id' => $utilization_id,
-        //                         'filename' => $fileName,
-        //                     ]);
-        //                 }
-        //                 else{
-        //                     ResearchDocument::create([
-        //                         'research_code' => $research_code,
-        //                         'research_form_id' => $report_category_id,
-        //                         'filename' => $fileName,
-
-        //                     ]);
-        //                 }
-        //             }
-        //         }
-        //     } catch (Exception $th) {
-        //         return redirect()->back()->with('error', 'Request timeout, Unable to upload, Please try again!' );
-        //     }
-        // }
     }
 
     public function manageResearchers($research_code){
