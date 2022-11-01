@@ -1,18 +1,21 @@
 <x-app-layout>
     @section('title', 'Research & Book Chapter |')
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
-            </div>
-        </div>
         {{-- Denied Details --}}
         @if ($deniedDetails = Session::get('denied'))
         <div class="alert alert-danger alert-index">
-            <i class="bi bi-x-circle"></i> Remarks: {{ $deniedDetails->reason }}
+        <i class="bi bi-x-circle"></i> Remarks: {{ $deniedDetails->reason }}
         </div>
         @endif
-        <h3 class="font-weight-bold mr-2">Edit {{ $research->research_code }}</h3>
+        <h3 class="font-weight-bold mr-2">Edit Registration Details {{ isset($research->title) ? 'of '.$research->title : '' }}</h3>
+        <div class="mb-3">
+            <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Return to Research Main Page</a>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                @include('research.edit-navbar', ['research_code' => $research->id, 'research_status' => $research->status, 'noRequisiteRecords' => $noRequisiteRecords])
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="card">

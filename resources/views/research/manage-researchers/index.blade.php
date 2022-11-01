@@ -1,10 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Manage Researchers of '.$research_code) }}
-        </h2>
-    </x-slot>
-
     <div class="container">
         <div class="row">
             <div class="col-md-12">

@@ -1,17 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Add Co-Researchers') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
-            </div>
-        </div>
-
         <div class="row">
             <div class="col-md-12">
                 {{-- Success Message --}}

@@ -1,9 +1,9 @@
 <x-app-layout>
     <div class="container">
-        @section('title', 'Research/Book Chapter Citations |')
+        @section('title', 'Research/Book Chapter Utilizations |')
         <div class="row">
             <div class="col-md-12">
-                <h3 class="font-weight-bold mr-2">Citations of {{ $research->title }}</h3>
+                <h3 class="font-weight-bold mr-2">Utilizations of {{ $research->title }}</h3>
                 <div class="mb-3">
                     <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to Research Main Page</a>
                 </div>
@@ -11,23 +11,19 @@
         </div>
         <div class="row">
             <div class="col-md-12">
+                {{-- Success Message --}}
+                @if ($message = Session::get('success'))
+                <div class="alert alert-success alert-index">
+                    <i class="bi bi-check-circle"></i> {{ $message }}
+                </div>
+                @endif
+                @if ($message = Session::get('cannot_access'))
+                    <div class="alert alert-danger alert-index">
+                        {{ $message }}
+                    </div>
+                @endif
                 <div class="card h-100">
                     <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                {{-- Success Message --}}
-                                @if ($message = Session::get('success'))
-                                <div class="alert alert-success alert-index">
-                                    <i class="bi bi-check-circle"></i> {{ $message }}
-                                </div>
-                                @endif
-                                @if ($message = Session::get('cannot_access'))
-                                    <div class="alert alert-danger alert-index">
-                                        {{ $message }}
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="table-responsive">
@@ -35,36 +31,30 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Article Title</th>
-                                                <th>Article Author</th>
+                                                <th>Agency/Organization that Utilized the Research Output</th>
+                                                <th>Brief Description of Research Utilization</th>
                                                 <th>Quarter</th>
                                                 <th>Year</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($citationRecords as $citation)
+                                            @foreach ($utilizationRecords as $utilization)
                                                 <tr role="button">
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $citation->article_title }}</a></td>
-                                                    <td>{{ $citation->article_author }}</td>
-                                                    <td class="{{ ($citation->report_quarter == $currentQuarterYear->current_quarter && $citation->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">
-                                                        {{ $citation->report_quarter }}
+                                                    <td><a href="{{ route('research.utilization.show', [$research->id, $utilization->id]) }}" class="link text-dark">{{ $utilization->organization }}</a></td>
+                                                    <td>{{ $utilization->utilization_description }}</td>
+                                                    <td class="{{ ($utilization->report_quarter == $currentQuarterYear->current_quarter && $utilization->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">
+                                                        {{ $utilization->report_quarter}}
                                                     </td>
                                                     <td>
-                                                        {{ $citation->report_year }}
+                                                        {{ $utilization->report_year}}
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="button-group">
-                                                            <a href="{{ route('research.citation.show', [$research->id, $citation->id]) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
-                                                            @if ($submissionStatus[5][$citation->id] == 0)
-                                                                <a href="{{ url('submissions/check/5/'.$citation->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                            @elseif ($submissionStatus[5][$citation->id] == 1)
-                                                                <a href="{{ url('submissions/check/5/'.$citation->id) }}" class="btn btn-sm btn-success">Submitted {{ $submitRole[$citation->id] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
-                                                            @elseif ($submissionStatus[5][$citation->id] == 2)
-                                                                <a href="{{ route('research.citation.edit', [$research->id, $citation->id]) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                            @endif 
-                                                        </div>   
+                                                            <a href="{{ route('research.utilization.edit', [$research->id, $utilization->id]) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
+                                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button> 
+                                                        </div>     
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -90,7 +80,7 @@
                 </div>
                 <div class="modal-body">
                     <h5 class="text-center">Are you sure you want to delete this research?</h5>
-                    <form action="{{ route('research.destroy', $research->research_code) }}" method="POST">
+                    <form action="{{ route('research.destroy', $research->id) }}" method="POST">
                         @csrf
                         @method('delete')
                 </div>
@@ -109,6 +99,6 @@
         $(function() {
             $("#researchc_table").DataTable();
         });
-    </script>
+    </script>p
 @endpush
 </x-app-layout>

@@ -30,14 +30,19 @@ use App\Models\{
     Maintenance\College,
     Maintenance\Department,
 };
+use App\Services\CommonService;
 use Exception;
 
 class CopyrightedController extends Controller
 {
     protected $storageFileController;
+    private $commonService;
+    protected $researchController;
 
-    public function __construct(StorageFileController $storageFileController){
+    public function __construct(StorageFileController $storageFileController, CommonService $commonService, ResearchController $researchController){
         $this->storageFileController = $storageFileController;
+        $this->commonService = $commonService;
+        $this->researchController = $researchController;
     }
 
     /**
@@ -49,65 +54,38 @@ class CopyrightedController extends Controller
     {
         $this->authorize('viewAny', ResearchCopyright::class);
 
-        
-        $researchFields = DB::select("CALL get_research_fields_by_form_id('7')");
+        $copyrightFields = DB::select("CALL get_research_fields_by_form_id('7')");
 
-        $researchDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 7)->get()->toArray();
+        $copyrightDocuments = ResearchDocument::where('research_code', $research->research_code)->where('research_form_id', 7)->get()->toArray();
+        
         $research= Research::where('research_code', $research->research_code)->where('user_id', auth()->id())
                 ->join('dropdown_options', 'dropdown_options.id', 'research.status')
                 ->select('research.*', 'dropdown_options.name as status_name')->first();
 
+        $copyrightRecord = ResearchCopyright::where('research_code', $research->research_code)->first();
 
-        $values = ResearchCopyright::where('research_code', $research->research_code)->first();
-        if (($research->nature_of_involvement == 12 || $research->nature_of_involvement == 13) && $values == null) {
-            return redirect()->route('research.show', $research->id)->with('cannot_access', 'Not yet added by the lead researcher.');
-        }
-        if($values == null){
-            return redirect()->route('research.copyrighted.create', $research->id);
-        }
-        $values = array_merge($research->toArray(), $values->toArray());
-
-        $submissionStatus = [];
-        $submitRole = "";
-        $reportdata = new ReportDataController;
-            if (LockController::isLocked($values['id'], 7)) {
-                $submissionStatus[7][$values['id']] = 1;
-                $submitRole[$values['id']] = ReportDataController::getSubmitRole($values['id'], 7);
-            }
-            else
-                $submissionStatus[7][$values['id']] = 0;
-            if (empty($reportdata->getDocuments(7, $values['id'])))
-                $submissionStatus[7][$values['id']] = 2;
-
-        foreach($researchFields as $field){
-            if($field->field_type_name == "dropdown"){
-                $dropdownOptions = DropdownOption::where('id', $values[$field->name])->where('is_active', 1)->pluck('name')->first();
-                if($dropdownOptions == null)
-                    $dropdownOptions = "-";
-                $values[$field->name] = $dropdownOptions;
-            }
-            elseif($field->field_type_name == "college"){
-                if($values[$field->name] == '0'){
-                    $values[$field->name] = 'N/A';
-                }
-                else{
-                    $college = College::where('id', $values[$field->name])->pluck('name')->first();
-                    $values[$field->name] = $college;
-                }
-            }
-            elseif($field->field_type_name == "department"){
-                if($values[$field->name] == '0'){
-                    $values[$field->name] = 'N/A';
-                }
-                else{
-                    $department = Department::where('id', $values[$field->name])->pluck('name')->first();
-                    $values[$field->name] = $department;
-                }
+        if($copyrightRecord == null){
+            if($research->status >= 28)
+                return redirect()->route('research.copyrighted.create', $research->id);
+            else {
+                $value = null;
+                return view('research.copyrighted.index', compact('research', 'value'));
             }
         }
 
-        return view('research.copyrighted.index', compact('research', 'researchFields', 'values',
-            'researchDocuments', 'submissionStatus', 'submitRole'));
+        $copyrightValues = array_merge($research->toArray(), $copyrightRecord->toArray());
+
+        $submissionStatus[7][$copyrightValues['id']] = $this->commonService->getSubmissionStatus($copyrightValues['id'], 7)['submissionStatus'];
+        $submitRole[$copyrightValues['id']] = $this->commonService->getSubmissionStatus($copyrightValues['id'], 7)['submitRole'];
+
+        $values = $this->commonService->getDropdownValues($copyrightFields, $copyrightValues);
+
+        $noRequisiteRecords[1] = $this->researchController->getNoRequisites($research)['presentationRecord'];
+        $noRequisiteRecords[2] = $this->researchController->getNoRequisites($research)['publicationRecord'];
+        $noRequisiteRecords[3] = $this->researchController->getNoRequisites($research)['copyrightRecord'];
+
+        return view('research.copyrighted.index', compact('research', 'copyrightFields', 'values',
+            'copyrightDocuments', 'submissionStatus', 'submitRole', 'noRequisiteRecords'));
     }
 
     /**
@@ -209,7 +187,7 @@ class CopyrightedController extends Controller
 
         \LogActivity::addToLog('Had added a copyright for research "'.$research->title.'".');
 
-        return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been added.');
+        return redirect()->route('research.index')->with('success', 'Research copyright has been added.');
     }
 
 
@@ -261,7 +239,12 @@ class CopyrightedController extends Controller
         $researchDocuments = ResearchDocument::where('research_code', $research['research_code'])->where('research_form_id', 7)->get()->toArray();
 
         $value = array_merge($research->toArray(), $copyrighted->toArray());
-        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments', 'dropdown_options', 'currentQuarter'));
+
+        $noRequisiteRecords[1] = $this->researchController->getNoRequisites($research)['presentationRecord'];
+        $noRequisiteRecords[2] = $this->researchController->getNoRequisites($research)['publicationRecord'];
+        $noRequisiteRecords[3] = $this->researchController->getNoRequisites($research)['copyrightRecord'];
+
+        return view('research.copyrighted.edit', compact('research', 'researchFields', 'value', 'researchDocuments', 'dropdown_options', 'currentQuarter', 'noRequisiteRecords'));
     }
 
     /**
@@ -330,7 +313,7 @@ class CopyrightedController extends Controller
 
         \LogActivity::addToLog('Had updated a copyright of research "'.$research->title.'".');
 
-        return redirect()->route('research.copyrighted.index', $research->id)->with('success', 'Research copyright has been updated.');
+        return redirect()->route('research.index')->with('success', 'Research copyright has been updated.');
     }
 
     /**

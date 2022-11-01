@@ -5,7 +5,7 @@
             <div class="col-md-12">
                 <h3 class="font-weight-bold mr-2">Register Research/Book Chapter</h3>
                 <div class="mb-3">
-                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to all Research</a>
+                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Return to Research Main Page</a>
                 </div>
                 <div class="card">
                     <div class="card-body">

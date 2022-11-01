@@ -1,21 +1,14 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __('Research Utilizations') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
+        @section('title', 'Research/Book Chapter Utilizations |')
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
+                <h3 class="font-weight-bold mr-2">Utilizations of {{ $research->title }}</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Back to Research Main Page</a>
+                </div>
             </div>
         </div>
-        @if ($research->nature_of_involvement == 11)
-        <div class="alert alert-info" role="alert-reminder">
-            <i class="bi bi-lightbulb-fill"></i> <strong>Reminder: </strong><strong>Before you submit, click Tag Co-Researchers</strong> button to check if the co-researchers already confirm your shared research.
-        </div>
-        @endif
         <div class="row">
             <div class="col-md-12">
                 {{-- Success Message --}}
@@ -32,21 +25,7 @@
                 <div class="card h-100">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-6">
-                                {{-- ADD Fields --}}
-                                @if ($research->nature_of_involvement == 11 || $research->nature_of_involvement == 224)
-                                <a href="{{ route('research.utilization.create', $research->id) }}" class="btn btn-success">
-                                    <i class="fas fa-plus"></i> Add Utilization
-                                </a>
-                                @endif
-                            </div>
-                            <div class="col-md-6 text-md-right">
-                                @include('research.options', ['research_id' => $research->id, 'research_status' => $research->status, 'involvement' => $research->nature_of_involvement, 'research_code' => $research->research_code])
-                            </div>
-                        </div>
-                        <div class="row">
                             <div class="col-md-12">
-                                <hr>
                                 <div class="table-responsive">
                                     <table class="table my-3 text-center table-hover" id="researchc_table" >
                                         <thead>
@@ -60,10 +39,10 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($researchutilizations as $utilization)
+                                            @foreach ($utilizationRecords as $utilization)
                                                 <tr role="button">
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td><a href="{{ route('research.utilization.show', [$research->id, $utilization->id]) }}" class="link text-dark">{{ $utilization->organization }}</a></td>
+                                                    <td>{{ $utilization->organization }}</a></td>
                                                     <td>{{ $utilization->utilization_description }}</td>
                                                     <td class="{{ ($utilization->report_quarter == $currentQuarterYear->current_quarter && $utilization->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">
                                                         {{ $utilization->report_quarter}}
@@ -72,13 +51,17 @@
                                                         {{ $utilization->report_year}}
                                                     </td>
                                                     <td>
-                                                    @if ($submissionStatus[6][$utilization->id] == 0)
-                                                        <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                    @elseif ($submissionStatus[6][$utilization->id] == 1)
-                                                        <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-success">Submitted {{ $submitRole[$utilization->id] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
-                                                    @elseif ($submissionStatus[6][$utilization->id] == 2)
-                                                        <a href="{{ route('research.utilization.edit', [$research->id, $utilization->id]) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                    @endif        
+                                                        <div class="btn-group" role="group" aria-label="button-group">
+                                            
+                                                            <a href="{{ route('research.utilization.show', [$research->id, $utilization->id]) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
+                                                            @if ($submissionStatus[6][$utilization->id] == 0)
+                                                                <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-primary">Submit</a>
+                                                            @elseif ($submissionStatus[6][$utilization->id] == 1)
+                                                                <a href="{{ url('submissions/check/6/'.$utilization->id) }}" class="btn btn-sm btn-success">Submitted {{ $submitRole[$utilization->id] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
+                                                            @elseif ($submissionStatus[6][$utilization->id] == 2)
+                                                                <a href="{{ route('research.utilization.edit', [$research->id, $utilization->id]) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
+                                                            @endif   
+                                                        </div>     
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -122,15 +105,7 @@
     <script>
         $(function() {
             $("#researchc_table").DataTable();
-            var rowCount = $('#researchc_table tbody tr').length;
-            console.log(rowCount);
-            if(rowCount == 1){
-
-            }
-            $('#researchc_table').on('click', 'tbody td', function(){
-                window.location = $(this).closest('tr').find('td:eq(1) a').attr('href');
-            });
         });
-    </script>
+    </script>p
 @endpush
 </x-app-layout>

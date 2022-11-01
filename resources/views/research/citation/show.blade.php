@@ -1,17 +1,14 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Research Citation') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
+        @section('title', 'Research/Book Chapter Citations |')
         <div class="row">
             <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id, 'research_status' => $research->status])
+                <h3 class="font-weight-bold mr-2">Citation {{ $values['title'] == null ? '' : 'of '.$values['title'] }}</h3>
+                <div class="mb-3">
+                    <a class="back_link" href="{{ route('research.utilization.index', $research['id']) }}"><i class="bi bi-chevron-double-left"></i>Return to Citations Main Page</a>
+                </div>
             </div>
         </div>
-
         <div class="row">
             <div class="col-md-12">
                 {{-- Success Message --}}
@@ -25,28 +22,7 @@
                         {{ $message }}
                     </div>
                 @endif
-                <div class="card">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="d-flex mr-2">
-                                    <p>
-                                        <a class="back_link" href="{{ route('research.citation.index', $research->id) }}"><i class="bi bi-chevron-double-left"></i>Back to all Research Citations</a>
-                                    </p>
-                                    @if ($research->nature_of_involvement == 11 || $research->nature_of_involvement == 224)
-                                    <p class="ml-auto">
-                                        <a href="{{ route('research.citation.edit', [$research->id, $values['id']]) }}" class="action_buttons_show mr-3"><i class="bi bi-pencil-square"></i> Edit</a>
-                                    </p>
-                                    <p>
-                                        <button type="button" class="action-delete action_buttons_show" data-toggle="modal" data-target="#deleteModal"><i class="bi bi-trash"></i> Delete</button>
-                                    </p>
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                        @include('show', ['formFields' => $researchFields, 'value' => $values,])
-                    </div>
-                </div>
+                @include('show', ['formFields' => $citationFields, 'value' => $values,])
             </div>
         </div>
         <div class="row mt-3">
@@ -62,8 +38,8 @@
                             <div class="col-md-6">
                                 <h6 style="color:maroon"><i class="far fa-file-alt mr-2"></i>Documents</h6>
                                 <div class="row">
-                                    @if (count($researchDocuments) > 0)
-                                        @foreach ($researchDocuments as $document)
+                                    @if (count($citationDocuments) > 0)
+                                        @foreach ($citationDocuments as $document)
                                             @if(preg_match_all('/application\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-12 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">
@@ -91,8 +67,8 @@
                             <div class="col-md-6">
                                 <h6 style="color:maroon"><i class="far fa-image mr-2"></i>Images</h6>
                                 <div class="row">
-                                    @if(count($researchDocuments) > 0)
-                                        @foreach ($researchDocuments as $document)
+                                    @if(count($citationDocuments) > 0)
+                                        @foreach ($citationDocuments as $document)
                                             @if(preg_match_all('/image\/\w+/', \Storage::mimeType('documents/'.$document['filename'])))
                                                 <div class="col-md-6 mb-3">
                                                     <div class="card bg-light border border-maroon rounded-lg">

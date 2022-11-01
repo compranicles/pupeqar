@@ -1,16 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Update Research Utilization') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
-            </div>
-        </div>
         {{-- Denied Details --}}
         @if ($deniedDetails = Session::get('denied'))
         <div class="alert alert-info" role="alert">
@@ -19,6 +8,15 @@
         @endif
         <div class="row">
             <div class="col-md-12">
+                @section('title', 'Research/Book Chapter Utilizations |')
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="font-weight-bold mr-2">Edit Research/Book Chapter Utilization</h3>
+                        <div class="mb-3">
+                            <a class="back_link" href="{{ route('research.utilization.index', $research['id']) }}"><i class="bi bi-chevron-double-left"></i>Return to Utilization Main Page</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('research.utilization.update', [$research['id'], $values['id']]) }}" method="post" class="needs-validation" novalidate>

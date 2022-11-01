@@ -46,7 +46,7 @@
                                             @foreach ($citationRecords as $citation)
                                                 <tr role="button">
                                                     <td>{{ $loop->iteration }}</td>
-                                                    <td>{{ $citation->article_title }}</a></td>
+                                                    <td><a href="{{ route('research.citation.show', [$research->id, $citation->id]) }}" class="link text-dark">{{ $citation->article_title }}</a></td>
                                                     <td>{{ $citation->article_author }}</td>
                                                     <td class="{{ ($citation->report_quarter == $currentQuarterYear->current_quarter && $citation->report_year == $currentQuarterYear->current_year) ? 'to-submit' : '' }}">
                                                         {{ $citation->report_quarter }}
@@ -56,14 +56,8 @@
                                                     </td>
                                                     <td>
                                                         <div class="btn-group" role="group" aria-label="button-group">
-                                                            <a href="{{ route('research.citation.show', [$research->id, $citation->id]) }}" class="btn btn-sm btn-primary d-inline-flex align-items-center">View</a>
-                                                            @if ($submissionStatus[5][$citation->id] == 0)
-                                                                <a href="{{ url('submissions/check/5/'.$citation->id) }}" class="btn btn-sm btn-primary">Submit</a>
-                                                            @elseif ($submissionStatus[5][$citation->id] == 1)
-                                                                <a href="{{ url('submissions/check/5/'.$citation->id) }}" class="btn btn-sm btn-success">Submitted {{ $submitRole[$citation->id] == 'f' ? 'as Faculty' : 'as Admin' }}</a>
-                                                            @elseif ($submissionStatus[5][$citation->id] == 2)
-                                                                <a href="{{ route('research.citation.edit', [$research->id, $citation->id]) }}#upload-document" class="btn btn-sm btn-warning d-inline-flex align-items-center"><i class="bi bi-exclamation-circle-fill text-danger mr-1"></i> No Document</a>
-                                                            @endif 
+                                                            <a href="{{ route('research.citation.edit', [$research->id, $citation->id]) }}" class="btn btn-sm btn-warning d-inline-flex align-items-center">Edit</a>
+                                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteModal">Delete</button>   
                                                         </div>   
                                                     </td>
                                                 </tr>

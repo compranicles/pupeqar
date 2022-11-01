@@ -1,16 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="h4 font-weight-bold">
-            {{ __($research->research_code.' > Update Research Presentation') }}
-        </h2>
-    </x-slot>
-
     <div class="container">
-        <div class="row">
-            <div class="col-md-12">
-                @include('research.navigation-bar', ['research_code' => $research->id ?? $research['id'], 'research_status' => $research->status ?? $research['status']])
-            </div>
-        </div>
         {{-- Denied Details --}}
         @if ($deniedDetails = Session::get('denied'))
         <div class="alert alert-info" role="alert">
@@ -19,6 +8,20 @@
         @endif
         <div class="row">
             <div class="col-md-12">
+                @section('title', 'Research/Book Chapter Presentation |')
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="font-weight-bold mr-2">Edit Presentation Details {{ isset($research->title) ? 'of '.$research->title : '' }}</h3>
+                        <div class="mb-3">
+                            <a class="back_link" href="{{ route('research.index') }}"><i class="bi bi-chevron-double-left"></i>Return to Research Main Page</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        @include('research.edit-navbar', ['research_code' => $research->id, 'research_status' => $research->status, 'noRequisiteRecords' => $noRequisiteRecords])
+                    </div>
+                </div>
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('research.presentation.update', [$research['id'], $value['id']]) }}" method="post" class="needs-validation" novalidate>
@@ -168,7 +171,7 @@
         });
     </script>
     <script>
-        v var report_category_id = 4;
+        var report_category_id = 4;
 		$('#description').empty().append('<option selected="selected" disabled="disabled" value="">Choose...</option>');
 		var apinb = '{{ url("/document-upload/description/4") }}';
 		setTimeout(function (){

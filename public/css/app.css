@@ -2726,7 +2726,6 @@ fieldset:disabled a.btn {
     border-color: #6cb2eb;
 }
 .btn-info:hover {
-    color: #fff;
     background-color: #4aa0e6;
     border-color: #3f9ae5;
 }
@@ -3418,7 +3417,7 @@ input[type="button"].btn-block {
     font-weight: 400;
     color: #212529;
     text-align: inherit;
-    white-space: nowrap;
+    white-space: normal;
     background-color: transparent;
     border: 0;
 }
@@ -14184,6 +14183,7 @@ table tr .padding_left_show {
     text-align: center;
     text-decoration: none;
     margin: 8px 25px 8px 0;
+    font-size: 15px;
 }
 
 .nav-sub-menu a:hover {
@@ -14192,6 +14192,7 @@ table tr .padding_left_show {
 
 .nav-sub-menu a.active {
     font-weight: bolder;
+    text-decoration-line: underline;
 }
 
 .submission-menu {
