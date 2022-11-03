@@ -28,7 +28,7 @@
                                     <h5 class="card-header text-center">Researcher</h5>
                                     <div class="card-body d-flex justify-content-center">
                                         @foreach ($department[10] as $value)
-                                            @include('dashboard.researcher', ['countToReview' => $countToReview[10][$value->college_id], 'collegeCode' => $value->code ])
+                                            @include('dashboard.researcher', ['countToReview' => $countToReview[10][$value->cluster_id], 'collegeCode' => $value->cluster_name ])
                                         @endforeach
                                     </div>
                                 </div>

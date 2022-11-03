@@ -27,6 +27,7 @@ use App\Models\{
     Authentication\Permission,
     Authentication\RolePermission,
     Authentication\UserRole,
+    FormBuilder\DropdownOption,
     Maintenance\College,
     Maintenance\Department,
     Maintenance\Sector,
@@ -206,19 +207,21 @@ class UserController extends Controller
         $departments = Department::select('name as text', 'id as value')->get();
         $colleges = College::select('name as text', 'id as value')->get();
         $sectors = Sector::select('name as text', 'id as value')->get();
+        $researchClusters = DropdownOption::where('dropdown_id', 67)->select('name as text', 'id as value')->get();
 
         $employeeColleges['F'] = Employee::where('type', 'F')->where('user_id', $user->id)->join('colleges', 'colleges.id', 'employees.college_id')->pluck('colleges.id')->all();
         $employeeColleges['A'] = Employee::where('type', 'A')->where('user_id', $user->id)->join('colleges', 'colleges.id', 'employees.college_id')->pluck('colleges.id')->all();
         $chairperson = Chairperson::join('departments', 'departments.id', 'chairpeople.department_id')->where('user_id', $user->id)->pluck('departments.id')->all();
         $dean = Dean::join('colleges', 'colleges.id', 'deans.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $sectorhead = SectorHead::join('sectors', 'sectors.id', 'sector_heads.sector_id')->where('user_id', $user->id)->pluck('sectors.id')->all();
-        $researcher = FacultyResearcher::join('colleges', 'colleges.id', 'faculty_researchers.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
+        $researcher = FacultyResearcher::where('user_id', $user->id)->pluck('cluster_id')->all();
         $extensionist = FacultyExtensionist::join('colleges', 'colleges.id', 'faculty_extensionists.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
         $associateDeanDirector = Associate::join('colleges', 'colleges.id', 'associates.college_id')->where('user_id', $user->id)->pluck('colleges.id')->all();
-        $assistantVP = Associate::where('user_id', $user->id)->pluck('sector_id')->all();
+        $assistantVP = Associate::where('user_id', $user->id)->whereNotNull('sector_id')->pluck('sector_id')->all();
+        // dd($assistantVP);
         return view('users.edit', compact('user', 'roles', 'permissions', 'yourroles', 'departments',
          'chairperson', 'colleges', 'dean', 'sectors', 'sectorhead', 'researcher', 'extensionist',
-         'associateDeanDirector', 'assistantVP', 'employeeColleges'));
+         'associateDeanDirector', 'assistantVP', 'employeeColleges', 'researchClusters'));
     }
 
     /**
@@ -339,15 +342,16 @@ class UserController extends Controller
                 ]);
             }
         }
+
         if(!in_array(10, $checkedroles)){
             FacultyResearcher::where('user_id', $user->id)->delete();
         }
         else{
             FacultyResearcher::where('user_id', $user->id)->delete();
-            foreach($request->input('research') as $researchDepartment){
+            foreach($request->input('research') as $clusterId){
                 FacultyResearcher::updateOrCreate([
                     'user_id' => $user->id,
-                    'college_id' => $researchDepartment,
+                    'cluster_id' => $clusterId,
                 ]);
             }
         }

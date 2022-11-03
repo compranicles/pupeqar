@@ -169,6 +169,9 @@ class GenerateController extends Controller
                 $fileSuffix = 'COLLEGE-QAR-'.$data->code.'-Q'.$request->input('quarter_generate').'-Y'.$request->input('year_generate');
             elseif ($request->input("type") == "admin")
                 $fileSuffix = 'OFFICE-QAR-'.$data->code.'-Q'.$request->input('quarter_generate').'-Y'.$request->input('year_generate');
+            elseif ($request->input("type") == "academic")
+                $fileSuffix = 'RESEARCH-QAR-'.$data->code.'-Q'.$request->input('quarter_generate').'-Y'.$request->input('year_generate');   
+            
             $departments = Department::where('college_id', $data->id)->pluck('id')->all();
             /* */
             return Excel::download(new CollegeConsolidatedAccomplishmentReportExport(

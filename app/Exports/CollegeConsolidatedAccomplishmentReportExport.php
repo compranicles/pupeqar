@@ -139,6 +139,43 @@ class CollegeConsolidatedAccomplishmentReportExport implements FromView, WithEve
             }
 
         }
+        elseif($this->type == "research"){
+                $tableFormat = GenerateTable::whereIn('id', [15,16,17,18,19,20,21])->get(); //Research tables
+                $tableColumns = [];
+                foreach ($tableFormat as $format){
+                    if($format->is_table == "0")
+                        $tableColumns[$format->id] = [];
+                    else
+                        $tableColumns[$format->id] = GenerateColumn::where('table_id', $format->id)->orderBy('order')->get()->toArray();
+                }
+
+                $tableContents = [];
+                foreach ($tableFormat as $format){
+                    if($format->is_table == "0" || $format->report_category_id == null)
+                        $tableContents[$format->id] = [];
+                    else
+                        $tableContents[$format->id] = Report::
+                            // ->where('user_roles.role_id', 1)
+                            whereIn('reports.cluster_', ['a', 'x'])
+                            ->where('reports.report_category_id', $format->report_category_id)
+                            ->where('reports.college_id', $this->collegeID)
+                            ->where(function($query) {
+                                $query->where('reports.researcher_approval', 1)
+                                    ->orWhere('reports.extensionist_approval', 1)
+                                    ->orWhere('reports.dean_approval', 1);
+                            })
+                            ->where('reports.report_year', $this->yearGenerate)
+                            ->where('reports.report_quarter', $this->quarterGenerate)
+                            ->join('users', 'users.id', 'reports.user_id')
+                            ->join('departments', 'departments.id', 'reports.department_id')
+                            ->select('reports.*', DB::raw("CONCAT(COALESCE(users.last_name, ''), ', ', COALESCE(users.first_name, ''), ' ', COALESCE(users.middle_name, ''), ' ', COALESCE(users.suffix, '')) as faculty_name"))
+                            ->orderBy('departments.name')
+                            ->orderBy('users.last_name')
+                            ->get()->toArray();
+                }
+            }
+
+        }
 
         $this->tableFormat = $tableFormat;
         $this->tableColumns = $tableColumns;

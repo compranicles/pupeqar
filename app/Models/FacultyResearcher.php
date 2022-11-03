@@ -12,6 +12,6 @@ class FacultyResearcher extends Model
 
     protected $fillable = [
         'user_id',
-        'college_id'
+        'cluster_id'
     ];
 }

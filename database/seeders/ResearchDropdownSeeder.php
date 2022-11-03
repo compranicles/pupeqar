@@ -15,7 +15,9 @@ class ResearchDropdownSeeder extends Seeder
      */
     public function run()
     {
-        
+        //REMINDER: DO NOT ADD NEW DROPDOWN OPTIONS HERE. OPTIONS ARE INCREMENTAL/IN ORDER.
+        //ADD NEW OPTIONS ON DropdownSeeder.php
+
         //classification
         $dropdownId  = Dropdown::insertGetId([
             'name' => 'Research Classification'
@@ -335,7 +337,5 @@ class ResearchDropdownSeeder extends Seeder
             'order' => 2,
             'is_active' => 1,
         ]);
-
-        
     }
 }

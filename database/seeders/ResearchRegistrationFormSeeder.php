@@ -88,6 +88,20 @@ class ResearchRegistrationFormSeeder extends Seeder
 
         ResearchField::insert([
             'research_form_id' => 1,
+            'label' => 'Discipline',
+            'name' => 'discipline',
+            'placeholder' => "If others, please specify.",
+            'size' => 'col-md-6',
+            'field_type_id' => 5,
+            'dropdown_id' => 67, 
+            'required' => 1,
+            'visibility' => 1,
+            'order' => 1,
+            'is_active' => 1,
+        ]);
+
+        ResearchField::insert([
+            'research_form_id' => 1,
             'label' => 'Nature of Involvement',
             'name' => 'nature_of_involvement',
             'placeholder' => null,

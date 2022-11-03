@@ -105,19 +105,17 @@ class DashboardController extends Controller
             $countExpectedTotal[10] = '';
             $countReceived[10] = '';
 
-            $department[10] = College::join('faculty_researchers', 'colleges.id', 'faculty_researchers.college_id')
-                    ->whereNull('faculty_researchers.deleted_at')
-                    ->where('faculty_researchers.user_id', auth()->id())->get();
+            $department[10] = FacultyResearcher::where('user_id', auth()->id())->join('dropdown_options', 'dropdown_options.id', 'faculty_researchers.cluster_id')->select('cluster_id', 'dropdown_options.name as cluster_name')->get();
             $tempcount = 0;
             $tempvalues = [];
             foreach ($department[10] as $value){
                 $tempcount = Report::whereNull('researcher_approval')
-                    ->where('college_id', $value->college_id)
+                    ->where('research_cluster_id', $value->cluster_id)
                     ->whereIn('report_category_id', [1, 2, 3, 4, 5, 6, 7, 8])
                     ->where('report_quarter', $currentQuarterYear->current_quarter)
                     ->where('report_year', $currentQuarterYear->current_year)
                     ->count();
-                $tempvalues[$value->college_id] = $tempcount;
+                $tempvalues[$value->cluster_id] = $tempcount;
             }
             $countToReview[10] = $tempvalues;
         }
